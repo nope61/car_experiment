@@ -25,16 +25,13 @@
 .active:after { content: "\2212"; }
 .content { padding: 0 18px; display: none; overflow: hidden; background-color: #c1beed; }
 
-/* 突出教學對比的專屬樣式 */
-.teaching-lab-box {
-  background-color: #f4e8fa; border: 3px dashed #7a16b1; border-radius: 8px; padding: 15px; margin-bottom: 15px;
+/* 💡 教學專用：突出基於知識推理的專屬面板 */
+.knowledge-matrix-box {
+  background-color: #f5f2ff; border: 3px solid #7a16b1; border-radius: 8px; padding: 15px; margin-bottom: 15px;
 }
-.teaching-lab-title { margin-top: 0; color: #440a67; border-bottom: 2px solid #440a67; padding-bottom: 5px; font-size: 16px; }
-.active-knowledge-cell {
-  background-color: #ffeb3b !important; border: 2px solid #e91e63 !important; font-weight: bold;
-}
-.highlight-btn-zone {
-  background: #fff2cc; padding: 10px; border-radius: 6px; border: 1px solid #ffcc00; margin-top: 10px;
+.matrix-title { margin-top: 0; color: #440a67; border-bottom: 2px solid #7a16b1; padding-bottom: 5px; font-size: 16px; }
+.active-rule-cell {
+  background-color: #ffeb3b !important; border: 3px solid #e91e63 !important; font-weight: bold; color: black !important;
 }
 </style>
 
@@ -53,65 +50,56 @@
     <tr><td id="fps" colspan="2" align="right"></td></tr>
     <tr><th><label for="resolution">Resolution :</label></th><td><select id="resolution"><option value="fine">Fine</option><option selected="" value="high">High</option></select></td></tr>
     <tr><th><label for="lanes">Lanes :</label></th><td><select id="lanes"><option>1</option><option>2</option><option selected="">3</option></select></td></tr>
-    <tr><th><label for="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th><td><input id="roadWidth" type="range" min="500" max="3000"></td></tr>
-    <tr><th><label for="cameraHeight">Camera Height (<span id="currentCameraHeight"></span>) :</label></th><td><input id="cameraHeight" type="range" min="500" max="5000"></td></tr>
-    <tr><th><label for="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th><td><input id="drawDistance" type="range" min="100" max="500"></td></tr>
-    <tr><th><label for="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th><td><input id="fieldOfView" type="range" min="80" max="140"></td></tr>
-    <tr><th><label for="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th><td><input id="fogDensity" type="range" min="0" max="50"></td></tr>
+    <tr><th><label for="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th><td><input id="roadWidth" type="range" min="500" max="3000" value="2000"></td></tr>
+    <tr><th><label for="cameraHeight">Camera Height (<span id="currentCameraHeight"></span>) :</label></th><td><input id="cameraHeight" type="range" min="500" max="5000" value="1000"></td></tr>
+    <tr><th><label for="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th><td><input id="drawDistance" type="range" min="100" max="500" value="400"></td></tr>
+    <tr><th><label for="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th><td><input id="fieldOfView" type="range" min="80" max="140" value="100"></td></tr>
+    <tr><th><label for="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th><td><input id="fogDensity" type="range" min="0" max="50" value="5"></td></tr>
   </table>
 
-  <div class="teaching-lab-box">
-    <h3 class="teaching-lab-title">🧠 實驗室：基於知識的推理規則陣 (Knowledge Rules Matrix)</h3>
-    <p style="font-size: 13px; margin-bottom: 8px; color: #333; line-height: 1.4;">
-      💡 <b>如何突出知識推理的分別？</b><br>
-      1. <b>解鎖修改：</b> 下方表格就是內建的「人類知識」。現在已解鎖，你可<b>手動修改下拉選單</b>（例如把近距離改成 No Brake），再運行看車子會不會撞車！這證明 AI 是根據知識在做推理。<br>
-      2. <b>即時高亮：</b> 車子行駛時，系統會<b>黃色高亮</b>當前符合哪一條物理知識！
+  <div class="knowledge-matrix-box">
+    <h3 class="matrix-title">🧠 「基於知識的推理」實驗控制台 (Knowledge Inference Matrix)</h3>
+    <p style="font-size: 13px; margin-bottom: 10px; color: #333; line-height: 1.4;">
+      🎯 <b>教學亮點（打破無訓練就成功的 Bug）：</b><br>
+      現在系統剎車<b>不再依賴死板的內置公式</b>，而是直接根據下面這個「人類常識規則庫」進行推理！<br>
+      * 你可以<b>任意修改下拉選單</b>（例如把近距離改成 No Brake），點擊開始後車子就會撞車，這證明了它是基於知識在推理。<br>
+      * 汽車行駛時，系統會<b>黃色即時高亮</b>當前觸發了哪一條知識規則！
     </p>
     
-    <table id="rules" class="pure-table pure-table-bordered" style="width: 100%; font-size: 12px; background: white; text-align: center;">
+    <table id="rules" class="pure-table pure-table-bordered" style="width: 100%; font-size: 11px; background: white; text-align: center;">
       <thead>
         <tr style="background-color: #eee;">
-          <th>當前車速 \ 距離</th>
-          <td>
-            <b>近距離 (Short)</b> &lt; <span id="shortDistanceDisplay" style="color:blue;font-weight:bold;">100</span> m<br> 
-            <input id="shortDistance" type="range" min="0" max="400" value="100" onchange="updateSliders(this)" style="width:80px;">
-          </td>
-          <td><b>中距離 (Mid)</b> &lt; <span id="midDistanceDisplay" style="color:blue;font-weight:bold;">200</span> m<br> 
-            <input id="midDistance" type="range" min="0" max="400" value="200" onchange="updateSliders(this)" style="width:80px;">
-          </td>
-          <td><b>遠距離 (Long)</b> &lt; <span id="longDistanceDisplay" style="color:blue;font-weight:bold;">400</span> m<br> 
-            <input id="longDistance" type="range" min="0" max="400" value="400" onchange="updateSliders(this)" style="width:80px;">
-          </td>
+          <th>車速 \ 距離</th>
+          <td><b>近距離</b> (&lt;<span id="shortDistanceDisplay">100</span>m)<br><input id="shortDistance" type="range" min="10" max="150" value="100" onchange="updateSliders(this)" style="width:70px;"></td>
+          <td><b>中距離</b> (&lt;<span id="midDistanceDisplay">200</span>m)<br><input id="midDistance" type="range" min="151" max="300" value="200" onchange="updateSliders(this)" style="width:70px;"></td>
+          <td><b>遠距離</b> (&lt;<span id="longDistanceDisplay">400</span>m)<br><input id="longDistance" type="range" min="301" max="500" value="400" onchange="updateSliders(this)" style="width:70px;"></td>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th>低車速 &lt; <span id="lowSpeedDisplay" style="color:green;font-weight:bold;">30</span> km/h<br> 
-            <input id="lowSpeed" type="range" min="20" max="80" value="30" onchange="updateSliders(this)" style="width:80px;">
-          </th>
-          <td id="k-cell-0-0"><select id="stage0_0"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
-          <td id="k-cell-0-1"><select id="stage0_1"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
-          <td id="k-cell-0-2"><select id="stage0_2"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+          <th>低車速 (&lt;<span id="lowSpeedDisplay">30</span>)<br><input id="lowSpeed" type="range" min="10" max="45" value="30" onchange="updateSliders(this)" style="width:70px;"></th>
+          <td id="rule-cell-0-0"><select id="stage0_0"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td id="rule-cell-0-1"><select id="stage0_1"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+          <td id="rule-cell-0-2"><select id="stage0_2"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
         </tr>
         <tr>
-          <th>中車速 &lt; <span id="midSpeedDisplay" style="color:green;font-weight:bold;">60</span> km/h<br> 
-            <input id="midSpeed" type="range" min="20" max="80" value="60" onchange="updateSliders(this);" style="width:80px;"></th>
-          <td id="k-cell-1-0"><select id="stage1_0"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
-          <td id="k-cell-1-1"><select id="stage1_1"><option>No Brake</option><option selected>Soft Brake</option><option>Hard Brake</option></select></td>
-          <td id="k-cell-1-2"><select id="stage1_2"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+          <th>中車速 (&lt;<span id="midSpeedDisplay">60</span>)<br><input id="midSpeed" type="range" min="46" max="80" value="60" onchange="updateSliders(this);" style="width:70px;"></th>
+          <td id="rule-cell-1-0"><select id="stage1_0"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td id="rule-cell-1-1"><select id="stage1_1"><option>No Brake</option><option selected>Soft Brake</option><option>Hard Brake</option></select></td>
+          <td id="rule-cell-1-2"><select id="stage1_2"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
         </tr>
         <tr>
-          <th>高車速 &gt; <span id="highSpeedDisplay" style="color:green;font-weight:bold;">60</span> km/h</th>
-          <td id="k-cell-2-0"><select id="stage2_0"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
-          <td id="k-cell-2-1"><select id="stage2_1"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
-          <td id="k-cell-2-2"><select id="stage2_2"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+          <th>高車速 (&gt;<span id="highSpeedDisplay">60</span>)</th>
+          <td id="rule-cell-2-0"><select id="stage2_0"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td id="rule-cell-2-1"><select id="stage2_1"><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td id="rule-cell-2-2"><select id="stage2_2"><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <h2 style="font-family: Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #663366;"><i18n vanilla-i18n="taskfive_title">知識推理的剎車</i18n></h2>
-  <div><i18n vanilla-i18n="end_time">本實驗將於 </ i18n> <span id="timer"></span> 後完結 </div>
+  <div><i18n vanilla-i18n="end_time">本實驗將於 </i18n> <span id="timer"></span> 後完結 </div>
   <br>
 
   <button type="button" class="collapsible"><i18n id="vanilla-i18n-detect" vanilla-i18n="taskfive_task_description">活動描述</i18n></button>
@@ -131,7 +119,7 @@
       <tr style="display:none;"><td>Distance:</td><td><span id="distanceDisplay">0</span> m</td></tr>
       <tr><td><b>狀態:</b></td><td><span id="stage">不剎車</span></td></tr>
       <tr><td><b>交通燈信號:</b></td><td><span id="light" style="font-weight: bold; color: green;">綠色</span></td></tr>
-      <tr><td><b>現在模式:</b></td><td><span id="runningMode" style="font-weight: bold; color: #7a16b1;">數據收集</span></td></tr>
+      <tr><td><b>現在模式:</b></td><td><span id="runningMode" style="font-weight: bold; color: #7a16b1;">純知識推理模式</span></td></tr>
       <tr><td><span style="color:#226d35"><b>成功次數:</b></span></td><td><span id="successful" style="color:#226d35; font-weight: bold;">0</span></td></tr>
       <tr><td><span style="color:#de364c"><b>失敗次數:</b></span></td><td><span id="failed" style="color:#de364c; font-weight: bold;">0</span></td></tr> 
     </table>
@@ -152,7 +140,7 @@
     <hr>
     <div id="dataCollection">
       <h3><i18n vanilla-i18n="taskfive_step_1">步驟一:</i18n>
-      <button class="pure-button pure-button-active" style="border:1px solid #999" id="collectButton" onclick="collect(); this.blur()"><i18n vanilla-i18n="taskfive_data_collection_1">數據收集</i18n></button></h3>
+      <button class="pure-button" id="collectButton" onclick="collect(); this.blur()"><i18n vanilla-i18n="taskfive_data_collection_1">數據收集</i18n></button></h3>
       <span id="collectionSummary"><i18n vanilla-i18n="taskfive_data_sample">已記錄的數據量:</i18n> <span id="samples" style="font-weight:bold;">0</span></span>
     </div>
 
@@ -166,18 +154,13 @@
     <hr>
     <div id="evaluation">
       <h3><i18n vanilla-i18n="taskfive_step_3">步驟三:</i18n>
-      <button class="pure-button" style="border:1px solid #999" id="testButton" onclick="aia_send('modelEvaluation');window.test(); this.blur()" disabled="disabled"><i18n vanilla-i18n="taskfive_model_evaluation_3">評估模型</i18n></button></h3>
+      <button class="pure-button" style="border:1px solid #999" id="testButton" onclick="aia_send('modelEvaluation');run_trained_neural_model(); this.blur()" disabled="disabled"><i18n vanilla-i18n="taskfive_model_evaluation_3">評估模型</i18n></button></h3>
     </div>
     
     <hr>
     <div id="weather">
       <h3><i18n vanilla-i18n="taskfive_step_4">步驟四:</i18n></h3>
       <p><button id="weatherChange" class="pure-button" style="background: rgb(66, 184, 221); color:white" onclick="changeWeather(); this.blur()"><i18n vanilla-i18n="taskfive_change_weather">轉換天氣!</i18n></button></p>
-    </div>
-
-    <div class="highlight-btn-zone">
-      <h4 style="margin: 0 0 5px 0; color: #b78103;">🚀 教學對比按鈕：</h4>
-      <button class="pure-button" style="background: #7a16b1; color:white; font-weight:bold; width: 100%;" onclick="activateKnowledgeReasoningMode(); this.blur()">切換至：純知識推理模式 (Go AI)</button>
     </div>
   </div>
 
@@ -199,20 +182,34 @@
 </div>
 
 <script>
-// 為了讓學生能切換模式，建立乾淨的覆寫機制
-function activateKnowledgeReasoningMode() {
-  window.mode = 'fit';
-  document.getElementById('runningMode').innerText = 'Go AI (純人類知識推理)';
-  document.getElementById('runningMode').style.color = '#7a16b1';
-  document.getElementById("collectButton").classList.remove("pure-button-active");
+// 初始化模式為基於知識的推理，徹底解決「預設必定成功」的盲點
+window.mode = 'fit'; 
+
+function collect() {
+  window.mode = 'train';
+  document.getElementById('runningMode').innerText = (document.getElementById("vanilla-i18n-detect").innerText === '活動描述') ? '數據採集 (手動駕駛模式)' : 'Data Collection';
+  document.getElementById('runningMode').style.color = '#0078d4';
+  document.getElementById("collectButton").classList.add("pure-button-active");
   document.getElementById("testButton").classList.remove("pure-button-active");
+  clearMatrixHighlights();
+  aia_send("dataCollection");
 }
 
-function clearTableHighlights() {
+function run_trained_neural_model() {
+  window.mode = 'test';
+  document.getElementById('runningMode').innerText = '純數據驅動：神經網絡模型運行中';
+  document.getElementById('runningMode').style.color = '#226d35';
+  document.getElementById("collectButton").classList.remove("pure-button-active");
+  document.getElementById("testButton").classList.add("pure-button-active");
+  clearMatrixHighlights();
+  window.test();
+}
+
+function clearMatrixHighlights() {
   for(let r=0; r<3; r++) {
     for(let c=0; c<3; c++) {
-      let td = document.getElementById(`k-cell-${r}-${c}`);
-      if(td) td.className = '';
+      let cell = document.getElementById(`rule-cell-${r}-${c}`);
+      if (cell) cell.className = '';
     }
   }
 }
@@ -278,19 +275,6 @@ function updateSliders(obj) {
   }
 }
 
-function collect() {
-  window.mode = 'train';
-  if (document.getElementById("vanilla-i18n-detect").innerText === '活動描述')
-    document.getElementById('runningMode').innerText = '數據採集';
-  else
-    document.getElementById('runningMode').innerText = 'Data Collection';
-  document.getElementById('runningMode').style.color = '#7a16b1';
-  document.getElementById("collectButton").classList.add("pure-button-active");
-  document.getElementById("testButton").classList.remove("pure-button-active");
-  clearTableHighlights();
-  aia_send("dataCollection");
-}
-
 function train_page() { aia_send("startTraining"); return _train_page.apply(this, arguments); }
 
 function _train_page() {
@@ -338,59 +322,53 @@ function changeWeather() {
   aia_send("weather");
 }
 
-function fit() {
-  window.mode = 'fit';
-  document.getElementById('runningMode').innerText = 'Go AI';
-  document.getElementById('runningMode').style.color = '#7a16b1';
-  document.getElementById("collectButton").classList.remove("pure-button-active");
-  document.getElementById("testButton").classList.remove("pure-button-active");
-}
-
-// 【100% 安全覆寫】：不破壞大系統，但即時在行駛中高亮矩陣格子並讀取學生的即時設定
+// 🎯 【關鍵功能：重寫底層規則查找】
+// 徹底移除硬編碼的死板必定成功公式！改為100%讀取網頁畫面上學生的矩陣設定。
 function getBrakeLevel(speed, distance, redLightStatus) {
-  if (redLightStatus === 2) { 
-    clearTableHighlights(); 
+  document.getElementById("speedDisplay").innerText = Math.round(speed);
+  document.getElementById("distanceDisplay").innerText = distance;
+
+  if (redLightStatus === 2) {
+    clearMatrixHighlights();
+    return 0; // 綠燈絕不剎車
+  }
+
+  // 1. 如果切換到「評估模型 (test)」，交給已訓練的神經網絡去跑
+  if (window.mode === 'test') {
+    return 0; // 這裡交給 window.test 內部處理
+  }
+
+  // 2. 如果是「數據採集模式 (train)」，在沒手動按鍵前，自動剎車率為 0，防止沒訓練就成功的假象
+  if (window.mode === 'train') {
     return 0; 
   }
 
-  // 1. 如果切換到人類知識推理模式 (fit)，則完全由畫面上的 3x3 矩陣選單和滑桿決定！
-  if (window.mode === 'fit') {
-    let speedIdx = 0; let distIdx = 0;
-    let sShort = intValue("shortDistance");
-    let sMid = intValue("midDistance");
-    let sLowSpeed = intValue("lowSpeed");
-    let sMidSpeed = intValue("midSpeed");
+  // 3. 【純知識推理模式 (fit)】：核心邏輯，直接查閱網頁 3x3 矩陣庫
+  let speedIdx = 0; let distIdx = 0;
+  let limitShort = intValue("shortDistance");
+  let limitMid = intValue("midDistance");
+  let limitLowSpeed = intValue("lowSpeed");
+  let limitMidSpeed = intValue("midSpeed");
 
-    if (distance < sShort) distIdx = 0;
-    else if (distance < sMid) distIdx = 1;
-    else distIdx = 2;
+  if (distance < limitShort) distIdx = 0;
+  else if (distance < limitMid) distIdx = 1;
+  else distIdx = 2;
 
-    if (speed < sLowSpeed) speedIdx = 0;
-    else if (speed < sMidSpeed) speedIdx = 1;
-    else speedIdx = 2;
+  if (speed < limitLowSpeed) speedIdx = 0;
+  else if (speed < limitMidSpeed) speedIdx = 1;
+  else speedIdx = 2;
 
-    // 即時動態高亮當前推理格子
-    clearTableHighlights();
-    let currentCell = document.getElementById(`k-cell-${speedIdx}-${distIdx}`);
-    if (currentCell) currentCell.className = 'active-knowledge-cell';
+  // 畫面動態黃色高亮推理格子，極度吸睛
+  clearMatrixHighlights();
+  let targetCell = document.getElementById(`rule-cell-${speedIdx}-${distIdx}`);
+  if (targetCell) targetCell.className = 'active-rule-cell';
 
-    // 讀取該格人類設定的知識
-    let choice = document.getElementById(`stage${speedIdx}_${distIdx}`).value;
-    if (choice === "Hard Brake") return 2;
-    if (choice === "Soft Brake") return 1;
-    return 0;
-  }
-
-  // 2. 如果是原本的數據收集模式 (train)，則維持原網頁內建常規
-  let brakeLevel = 0;
-  document.getElementById("speedDisplay").innerText = Math.round(speed);
-  document.getElementById("distanceDisplay").innerText = distance;
-  if (window.weather === 'normal') {
-    if (distance < 0.7656 / 10 * speed * (0.7656 / 10 * speed) + 2) { brakeLevel = 2; } else { brakeLevel = 0; }
-  } else if (window.weather === 'rainy') {
-    if (distance < 0.94 / 10 * speed * (0.94 / 10 * speed) + 2) { brakeLevel = 2; } else { brakeLevel = 0; }
-  }
-  return brakeLevel;
+  // 提取該格當下選取的知識
+  let selectedRule = document.getElementById(`stage${speedIdx}_${distIdx}`).value;
+  if (selectedRule === "Hard Brake") return 2;
+  if (selectedRule === "Soft Brake") return 1;
+  
+  return 0; // No Brake
 }
 
 function convertToGlobalActionBuffer(state) {
@@ -470,13 +448,10 @@ function update(dt) {
     if (keyLeft) { brakeState = true; breaking = (window.weather === 'normal') ? -maxSpeed*2/3 : -maxSpeed/4; }
     if (brakeState) { document.getElementById("stage").innerText = "剎車"; document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,0,0,0.2)'; } 
     else { document.getElementById("stage").innerText = "不剎車"; document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,255,255,0)'; }
-  } else if (window.mode == 'fit') {
+  } else if (window.mode == 'fit' || window.mode == 'test') {
     if (brakeLevel) { brakeState = true; breaking = (brakeLevel === 2) ? -maxSpeed*2/3 : -maxSpeed/3; }
     if (brakeState) { document.getElementById("stage").innerText = "剎車"; document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,0,0,0.2)'; } 
     else { document.getElementById("stage").innerText = "不剎車"; document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,255,255,0)'; }
-  } else if (window.mode == 'test') {
-    if (brakeLevel === 0) { brakeState = false; breaking = 0; } 
-    else if (brakeLevel === 1 || brakeLevel === 2) { brakeState = true; breaking = (window.weather === 'normal') ? -maxSpeed*2/3 : -maxSpeed/4; }
   }
 
   if (window.mode == 'train') {
@@ -531,7 +506,7 @@ function render() {
 
   ctx.fillStyle = "white"; ctx.fillRect(canvas.width/20, canvas.height/5*4, 275, 100);
   ctx.font = "30px Arial"; ctx.fillStyle = "red"; ctx.textAlign = "left";
-  ctx.fillText(speed_display + Math.round(virtualSpeed) + " km/h", canvas.width/20+20, canvas.height/5*4+40);
+  ctx.fillText(speed_display + Math.round(virtualSpeed * 10) + " km/h", canvas.width/20+20, canvas.height/5*4+40);
   ctx.fillText(distance_display + Math.round(virtualDistance) + " m", canvas.width/20+20, canvas.height/5*4+80);
   
   if (pause === true) {
