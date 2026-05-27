@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>知識推理的煞車 - 智能駕駛工作坊</title>
+  <title>Knowledge-based Reasoning</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link href="common.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
@@ -12,906 +12,214 @@
 
   <script src="https://kata-ai.keep.edu.hk/kevent/kevent.js"></script>
   <script src="../kevent.js"></script>  
-  <script>\r
-   var aia_cid = 'Knowledge-based stopping';\r
-   start_timer();\r
+  <script>
+   var aia_cid = 'Knowledge-based stopping';
+   start_timer();
   </script>
   
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  /* 全域介面現代化，引導學生視覺 */
-  body {
-    font-family: "Microsoft JhengHei", Arial, sans-serif;
-    background-color: #f4f6f9;
-    padding: 20px;
-    margin: 0;
-  }
-  
-  .workshop-container {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
+.collapsible {
+  background-color: #440a67;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 18px;
+  margin-top: 5px;
+  border-radius: 4px;
+}
 
-  /* 左邊現代化控制台 */
-  .control-panel {
-    flex: 1;
-    min-width: 420px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+.active, .collapsible:hover {
+  background-color: #7a16b1;
+}
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
 
-  /* 右邊 3D 遊戲與表格區 */
-  .display-panel {
-    flex: 1.5;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+.active:after {
+  content: "\2212";
+}
 
-  /* 步驟卡片設計：讓學生跟着 1, 2, 3 做 */
-  .step-box {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 15px;
-    background: #fafafa;
-    border-left: 5px solid #cbd5e1;
-  }
-  
-  .step-box.active-step {
-    border-left-color: #440a67;
-    background: #fdf6ff;
-  }
-
-  .step-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #440a67;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .dashboard-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .dashboard-table td {
-    padding: 6px 0;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 14px;
-  }
-
-  /* 按鈕美化 */
-  .action-btn {
-    width: 100%;
-    padding: 10px;
-    font-weight: bold;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 5px;
-  }
-  .btn-purple { background: #440a67; color: white; }
-  .btn-purple:hover { background: #32074d; }
-  .btn-orange { background: #ff9800; color: white; }
-  .btn-orange:hover { background: #e65100; }
-  .btn-cyan { background: #00bcd4; color: white; }
-  .btn-cyan:hover { background: #0097a7; }
-
-  /* 保持原本摺疊層的樣式，但優化外觀 */
-  .collapsible {
-    background-color: #718096;
-    color: white;
-    cursor: pointer;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 14px;
-    border-radius: 6px;
-    font-weight: bold;
-  }
-  .active, .collapsible:hover {
-    background-color: #4a5568;
-  }
-  .content {
-    padding: 0 10px;
-    display: none;
-    overflow: hidden;
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 0 0 6px 6px;
-    margin-top: -2px;
-  }
-
-  /* 傳統表格與 3D 視窗容器美化 */
-  #racer-container {
-    background: #000;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-
-  #rules {
-    width: 100%;
-    background: white;
-    border-collapse: collapse;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  
-  #rules th, #rules td {
-    border: 1px solid #e2e8f0;
-    padding: 10px;
-    text-align: center;
-  }
-
-  /* 頂部標題 */
-  .main-header {
-    text-align: center;
-    color: #440a67;
-    margin-bottom: 20px;
-  }
+.content {
+  padding: 10px 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1effc;
+  border: 1px solid #c1beed;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  margin-bottom: 10px;
+}
 </style>
-</head>
 
-<body>
+<script src="../vanilla-i18n.js"></script>
+<script>
+  const languages = [
+    "English",
+    "中文"
+  ];
+  new vanilla_i18n (
+    languages,
+    opts = {
+      path: "../vanilla-i18n",
+      debug: false,
+      i18n_attr_name: "vanilla-i18n",
+      toggler_id: "vanilla-i18n-toggler",
+      default_language: languages[0],
+    }
+  ).run();
+</script>
 
-  <div class="main-header">
-    <h2 style="margin: 0 0 5px 0;">🚦 AI 知識推理自動駕駛模擬器</h2>
-    <div style="font-size: 14px; color: #666;">⏱️ 本實驗將於 <span id="timer" style="font-weight:bold; color:#dc3545;">--:--</span> 後完結</div>
+</head> 
+
+<body> 
+  <div id="wrapper">
+
+  <h2 style="font-family: Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #663366;"><i18n vanilla-i18n="taskfive_title">知識推理的剎車</i18n></h2>
+  <div><i18n vanilla-i18n="end_time">本實驗將於 </i18n> <span id="timer"></span> 後完結 </div>
+  <br>
+
+  <button type="button" class="collapsible"><i18n id="vanilla-i18n-detect" vanilla-i18n="taskfive_task_description">活動描述</i18n></button>
+  <div class='content'>
+    <table cellspacing="5" cellpadding="5">
+      <tr><td valign=top colspan=2><b><i18n vanilla-i18n="taskthree">活動三：知識推理的剎車</i18n></b></td></tr>
+      <tr><td valign=top>1.</td><td valign=top><i18n vanilla-i18n="taskfive_in">進入 </i18n> <span style="padding: 2px; color: rgb(0,0,0); background-color: rgb(200, 200, 200);"><b><i18n vanilla-i18n="taskfive_data_collection">數據收集</i18n></b></span><i18n vanilla-i18n="taskfive_mode"></i18n><i18n vanilla-i18n="taskfive_press_mid">模式，在交通燈信號為紅色時按B鍵讓汽車停在綠色和紅色線之間；在信號為黃色時可視乎距離通過或在交通燈前停下；在信號為綠色讓汽車通過交通燈</i18n> </td></tr>
+      <tr><td valign=top>2.</td><td valign=top><i18n vanilla-i18n="taskfive_when_the_number">當收集到足夠良好數據時，按</i18n> <span style="padding: 2px; color: rgb(255,255,255); background-color: rgb(0, 200, 0);"><b><i18n vanilla-i18n="taskfive_train_from">訓練模型</i18n> </b></span> <i18n vanilla-i18n="taskfive_button_for"> 按鈕以訓練AI自動駕駛模型</i18n></td></tr>      
+      <tr><td valign=top>3.</td><td valign=top><i18n vanilla-i18n="taskfive_press">按</i18n> <span style="padding: 2px; color: rgb(0,0,0); background-color: rgb(200,200,200);"><b><i18n vanilla-i18n="taskfive_model_evaluation">評估模型</i18n></b></span> <i18n vanilla-i18n="taskfive_to_see_the">按鈕以觀察AI自動駕駛模型的表現</i18n> </td></tr>            
+      <tr><td valign=top>4.</td><td valign=top><i18n vanilla-i18n="taskfive_system_automatically">系統將應用AI自動駕駛模型在模擬器中並自動依照剎車結果計算分數</i18n></td></tr>                  
+      <tr><td valign=top>5</td><td valign=top><i18n vanilla-i18n="taskfive_press">按</i18n> <span style="padding: 2px; color: rgb(255,255,255); background-color: rgb(0, 187, 211);"><b><i18n vanilla-i18n="taskfive_change_weather">轉換天氣!</i18n></b></span> <i18n vanilla-i18n="taskfive_to_train_the">按鈕並觀察自動駕駛模型的表現</i18n></td></tr>                        
+    </table>
   </div>
 
-  <div class="workshop-container">
+  <button type="button" class="collapsible">⚙️ <i18n vanilla-i18n="advanced_controls">高級參數與畫面設定 (Advanced Settings)</i18n></button>
+  <div class="content">
+    <table id="controls" class="pure-table pure-table-horizontal" style="width:100%; font-size: 14px;">
+      <tr>
+        <td colspan="2"><a href="v1.straight.knowledge.fullAI.html" class="pure-button" style="width: 100%">Switch to Full AI (Straight)</a></td>
+      </tr>
+      <tr>
+        <td id="fps" colspan="2" align="right" style="color: #666; font-size: 12px;"></td>
+      </tr>
+      <tr>
+        <th><label for="resolution">Resolution :</label></th>
+        <td>
+          <select id="resolution" style="width:100%">
+            <option value="fine">Fine (1280x960)</option>
+            <option selected="" value="high">High (1024x768)</option>
+            <option value="medium">Medium (640x480)</option>
+            <option value="low">Low (480x360)</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="lanes">Lanes :</label></th>
+        <td>
+          <select id="lanes" style="width:100%">
+            <option>1</option>
+            <option>2</option>
+            <option selected="">3</option>
+            <option>4</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th>
+        <td><input id="roadWidth" type="range" min="500" max="3000" title="integer (500-3000)" style="width:100%"></td>
+      </tr>
+      <tr>
+        <th><label for="cameraHeight">Camera Height (<span id="currentCameraHeight"></span>) :</label></th>
+        <td><input id="cameraHeight" type="range" min="500" max="5000" title="integer (500-5000)" style="width:100%"></td>
+      </tr>
+      <tr>
+        <th><label for="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th>
+        <td><input id="drawDistance" type="range" min="100" max="500" title="integer (100-500)" style="width:100%"></td>
+      </tr>
+      <tr>
+        <th><label for="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th>
+        <td><input id="fieldOfView" type="range" min="80" max="140" title="integer (80-140)" style="width:100%"></td>
+      </tr>
+      <tr>
+        <th><label for="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th>
+        <td><input id="fogDensity" type="range" min="0" max="50" title="integer (0-50)" style="width:100%"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="instructions">
+    <h3><i18n vanilla-i18n="taskthree_game_statistics">遊戲數據</i18n></h3>
+    <table class="pure-table pure-table-horizontal" style="width: 100%">
+      <tr style="display:none;">
+        <td><i18n vanilla-i18n="taskthree_speed">Speed</i18n></td>
+        <td><span id="speedDisplay">0</span> km/h</td>
+      </tr>
+      <tr style="display:none;">
+        <td><i18n vanilla-i18n="taskthree_distance">Distance:</i18n></td>
+        <td><span id="distanceDisplay">0</span> m</td>
+      </tr>
+      <tr>
+        <td><b>狀態:</b></td>
+        <td><span id="stage">不剎車</span></td>
+      </tr>
+      <tr>
+        <td><b>交通燈信號:</b></td>
+        <td><span id="light" style="font-weight: bold; color: green;">綠色</span></td>
+      </tr>
+      <tr>
+        <td><b>現在模式:</b></td>
+        <td><span id="runningMode">數據收集</span></td>
+      </tr>
+      <tr>
+        <td><span style="color:#226d35"><b>成功次數:</b></span></td>
+        <td><span id="successful" style="color:#226d35; font-weight: bold;">0</span></td>
+      </tr>
+      <tr>
+        <td><span style="color:#de364c"><b>失敗次數:</b></span></td>
+        <td><span id="failed" style="color:#de364c; font-weight: bold;">0</span></td>
+      </tr> 
+    </table>
+
+    <div hidden>
+      <i18n vanilla-i18n="canvas_translation_helper_Speed" id="canvas_translation_helper_Speed">時速:      </i18n>
+      <i18n vanilla-i18n="canvas_translation_helper_Distance" id="canvas_translation_helper_Distance">距離:      </i18n>
+      <i18n vanilla-i18n="canvas_translation_helper_Successful" id="canvas_translation_helper_Successful">遊戲成功!</i18n>
+      <i18n vanilla-i18n="canvas_translation_helper_Failed" id="canvas_translation_helper_Failed">遊戲失敗!</i18n>
+      <i18n vanilla-i18n="canvas_translation_helper_Start" id="canvas_translation_helper_Start">按「開始」進入下一輪遊戲</i18n>
+    </div>
+  
+    <div style="margin-top: 15px;">
+      <button id="startGame" class="pure-button" onclick="pause=false" style="color:white; background: rgb(202, 60, 60); min-width: 80px;"><i18n vanilla-i18n="start_game">開始</i18n></button>
+      <button id="resetCount" class="pure-button" onclick="resetAll()" style="color:white; background: #555; min-width: 80px;"><i18n vanilla-i18n="reset_game">重設</i18n></button>
+    </div>
     
-    <div class="control-panel">
-      
-      <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-        <h4 style="margin: 0 0 10px 0; color: #334155; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">📊 實時駕駛數據</h4>
-        <table class="dashboard-table">
-          <tr>
-            <td>🚦 交通燈信號:</td>
-            <td style="font-weight: bold; text-align: right;"><span id="light">Green</span></td>
-          </tr>
-          <tr>
-            <td>⚙️ 目前模式:</td>
-            <td style="font-weight: bold; text-align: right; color: #440a67;"><span id="runningMode">Data Collection</span></td>
-          </tr>
-          <tr>
-            <td>🚗 煞車狀態:</td>
-            <td style="font-weight: bold; text-align: right;"><span id="stage">No Brake</span></td>
-          </tr>
-          <tr>
-            <td>🟢 成功停下次數:</td>
-            <td style="font-weight: bold; text-align: right; color: #22c55e;"><span id="successful">0</span></td>
-          </tr>
-          <tr>
-            <td>🔴 超線失敗次數:</td>
-            <td style="font-weight: bold; text-align: right; color: #ef4444;"><span id="failed">0</span></td>
-          </tr>
-        </table>
-        
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <button id="startGame" class="pure-button pure-button-primary" style="flex:1; font-weight:bold; background:#22c55e;" onclick="pause=false">▶️ 開始驅進</button>
-          <button id="resetCount" class="pure-button pure-button-primary" style="flex:1; font-weight:bold; background:#ef4444;" onclick="resetAll()">🔄 重設分數</button>
-        </div>
-      </div>
-
-      <div class="step-box active-step">
-        <div class="step-title">1️⃣ 步驟一：人類司機數據採集</div>
-        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">當黃燈/紅燈亮起時，長按鍵盤 <b>【 B 鍵 】</b> 進行煞車，將車安全停在綠線內。</p>
-        <button class="action-btn btn-purple" onclick="collect();">📥 開啟數據採集錄製</button>
-        <div style="margin-top: 8px; font-size: 13px; font-weight: bold;">
-          📈 已成功捕獲數據：<span id="samples" style="color:#440a67; font-size:15px;">0</span> 筆
-        </div>
-      </div>
-
-      <div class="step-box">
-        <div class="step-title">2️⃣ 步驟二：大腦模型演算法訓練</div>
-        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">數據足夠後，點擊下方按鈕，將數據餵給 AI 生成推理規則（觀察右側九宮格變化）。</p>
-        <button class="action-btn btn-orange" id="trainButton" onclick="train_page();" disabled>🤖 🧠 開始訓練 AI 模型</button>
-        <div id="trainingSummary" style="display:none; margin-top:5px; font-size:12px; color:#475569;">
-          Loss 誤差率: <span id="loss">0</span>
-        </div>
-      </div>
-
-      <div class="step-box">
-        <div class="step-title">3️⃣ 步驟三：自動駕駛評估與考核</div>
-        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">放開鍵盤！測試受訓後的 AI 能否根據九宮格規則完美自動煞車。</p>
-        <button class="pure-button action-btn btn-cyan" id="testButton" onclick="aia_send('modelEvaluation'); window.test();" disabled>🏁 啟動 AI 自動駕駛評估</button>
-      </div>
-
-      <div class="step-box" style="background: #f0fdf4;">
-        <div class="step-title" style="color: #166534;">🌧️ 環境壓力測試</div>
-        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">切換成下雨天，路面摩擦力會變低，看看 AI 的規則還管不管用？</p>
-        <button id="weatherChange" class="pure-button pure-button-primary" style="width:100%; font-weight:bold; background:#3b82f6;" onclick="changeWeather();">🌦️ 切換 晴天 / 雨天 環境</button>
-      </div>
-
-      <button type="button" class="collapsible">⚙️ 進階：3D 相機與環境參數微調</button>
-      <div class="content">
-        <table class="dashboard-table" style="margin: 10px 0;">
-          <tr>
-            <td>鏡頭解像度:</td>
-            <td>
-              <select id="resolution">
-                <option value="fine">Fine (1280x960)</option>
-                <option selected value="high">High (1024x768)</option>
-                <option value="medium">Medium (640x480)</option>
-                <option value="low">Low (480x360)</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>行車線道數:</td>
-            <td>
-              <select id="lanes"><option>1</option><option>2</option><option selected>3</option><option>4</option></select>
-            </td>
-          </tr>
-          <tr>
-            <td>道路寬度 (<span id="currentRoadWidth"></span>):</td>
-            <td><input id="roadWidth" type="range" min="500" max="3000" title="integer"></td>
-          </tr>
-          <tr>
-            <td>相機高度 (<span id="currentCameraHeight"></span>):</td>
-            <td><input id="cameraHeight" type="range" min="500" max="5000" title="integer"></td>
-          </tr>
-          <tr>
-            <td>渲染視野距離 (<span id="currentDrawDistance"></span>):</td>
-            <td><input id="drawDistance" type="range" min="100" max="500" title="integer"></td>
-          </tr>
-          <tr>
-            <td>相機視角 Field of View (<span id="currentFieldOfView"></span>):</td>
-            <td><input id="fieldOfView" type="range" min="80" max="140" title="integer"></td>
-          </tr>
-          <tr>
-            <td>有霧環境霧密度 (<span id="currentFogDensity"></span>):</td>
-            <td><input id="fogDensity" type="range" min="0" max="50" title="integer"></td>
-          </tr>
-        </table>
-      </div>
-
-      <button id="exitGame" class="pure-button pure-button-primary" onclick="aia_send('exitGame'); window.history.back();" style="background:#64748b; font-weight:bold;">🚪 儲存並離開</button>
+    <hr>
+    <div id="dataCollection">
+      <h3><i18n vanilla-i18n="taskfive_step_1">步驟一:</i18n>
+      <button class="pure-button pure-button-active" style="border:1px solid #999" id="collectButton" onclick="collect(); this.blur()"><i18n vanilla-i18n="taskfive_data_collection_1">數據收集</i18n></button></h3>
+      <span id="collectionSummary"><i18n vanilla-i18n="taskfive_data_sample">已記錄的數據量:</i18n> <span id="samples" style="font-weight:bold;">0</span></span>
     </div>
 
-    <div class="display-panel">
-      
-      <div id="racer-container">
-        <div id="racer">
-          <div id="hud">
-            <span id="speed" class="hud-value"><span id="speedDisplay">0</span> mph</span>
-            <span id="currentStage" class="hud-value">Stage: <span id="stageDisplay">0</span></span>
-            <span id="distance" class="hud-value">Distance: <span id="distanceDisplay">0</span> m</span>
-          </div>
-          <canvas id="canvas">很抱歉，您的瀏覽器不支援 Canvas。</canvas>
-          <div id="brakeLayer"></div>
-        </div>
-      </div>
-
-      <div>
-        <h3 id="vanilla-i18n-detect" style="margin: 0 0 10px 0; color:#440a67;">🧠 AI 知識推理規則大腦 (速度 × 距離 九宮格)</h3>
-        
-        <table id="rules">
-          <thead>
-            <tr>
-              <th style="background: #f1f5f9;">速度 \ 距離</th>
-              <th style="background: #fee2e2; color: #991b1b;">近距離 (<input id="shortDistance" type="range" min="10" max="150" style="width:70px;"><span id="shortDistanceDisplay"></span>m)</th>
-              <th style="background: #fef3c7; color: #92400e;">中距離 (<input id="midDistance" type="range" min="100" max="300" style="width:70px;"><span id="midDistanceDisplay"></span>m)</th>
-              <th style="background: #dcfce7; color: #166534;">遠距離 (<input id="longDistance" type="range" min="250" max="600" style="width:70px;"><span id="longDistanceDisplay"></span>m)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="background: #dcfce7; font-weight: bold; color: #166534;">慢速 (<input id="lowSpeed" type="range" min="10" max="45" style="width:50px;"><span id="lowSpeedDisplay"></span>)</td>
-              <td id="cell0_0">
-                <select id="stage0_0">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-              <td id="cell0_1">
-                <select id="stage0_1">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-              <td id="cell0_2">
-                <select id="stage0_2">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td style="background: #fef3c7; font-weight: bold; color: #92400e;">中速 (<input id="midSpeed" type="range" min="35" max="80" style="width:50px;"><span id="midSpeedDisplay"></span>)</td>
-              <td id="cell1_0">
-                <select id="stage1_0">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-              <td id="cell1_1">
-                <select id="stage1_1">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-              <td id="cell1_2">
-                <select id="stage1_2">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td style="background: #fee2e2; font-weight: bold; color: #991b1b;">快速 (&gt; <span id="highSpeedDisplay"></span>)</td>
-              <td id="cell2_0">
-                <select id="stage2_0">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-              <td id="cell2_1">
-                <select id="stage2_1">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-              <td id="cell2_2">
-                <select id="stage2_2">
-                  <option value="2">Hard Brake</option>
-                  <option value="1">Soft Brake</option>
-                  <option value="0">No Brake</option>
-                </select>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
+    <hr>
+    <div id="training">
+      <h3><i18n vanilla-i18n="taskfive_step_2">步驟二:</i18n>
+      <button class="pure-button" id="trainButton" onclick="train_page(); this.blur()" style="background: rgb(28, 184, 65); color:white" disabled="disabled"><i18n vanilla-i18n="taskfive_train_from_2">訓練模型</i18n></button></h3>
+      <span id="trainingSummary" style="display: none;"><i18n vanilla-i18n="taskfive_training_loss">Training Loss:</i18n> <span id="loss">0</span></span>
     </div>
-
-  </div>
-
-  <div style="display:none;">
-    <span id="canvas_translation_helper_Speed">Speed: </span>
-    <span id="canvas_translation_helper_Distance">Distance: </span>
-    <span id="canvas_translation_helper_Successful">Successful Stop</span>
-    <span id="canvas_translation_helper_Failed">Failed Stop</span>
-    <span id="canvas_translation_helper_Start">Press Start driving to continue</span>
-  </div>
-
-  <script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-    for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-          content.style.display = "none";
-        } else {
-          content.style.display = "block";
-        }
-      });
-    }
-
-    // 當數據開始收集，解鎖訓練按鈕
-    setInterval(function() {
-      var sampleCount = parseInt(document.getElementById("samples").innerText) || 0;
-      if (sampleCount > 0) {
-        document.getElementById("trainButton").removeAttribute("disabled");
-      }
-    }, 500);
-
-    // 當 Loss 發生變更（代表訓練完成），解鎖評估按鈕
-    var observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        if (document.getElementById("loss").innerText !== "0") {
-          document.getElementById("testButton").removeAttribute("disabled");
-        }
-      });
-    });
-    observer.observe(document.getElementById("loss"), { childList: true, characterData: true });
-  </script>
-
-  <script>
-    function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-    function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-    var fps = 60; 
-    var step = 1 / fps; 
-    var width = 1024; 
-    var height = 768; 
-    var segments = []; 
-    var stats = window.Game.stats('fps'); 
-    var canvas = window.Dom.get('canvas'); 
-    var ctx = canvas.getContext('2d'); 
-    var background = null; 
-    var sprites = null; 
-    var resolution = null; 
-    var roadWidth = 2000; 
-    var segmentLength = 150; 
-    var rumbleLength = 3; 
-    var trackLength = null; 
-    var lanes = 3; 
-    var fieldOfView = 100; 
-    var cameraHeight = 1000; 
-    var cameraDepth = null; 
-    var drawDistance = 400; 
-    var playerX = 0; 
-    var playerZ = null; 
-    var fogDensity = 5; 
-    var position = 0; 
-    var maxSpeed = segmentLength / step; 
-    var speed = Math.random() * maxSpeed / 3 * 2 + maxSpeed / 3; 
-    var accel = maxSpeed / 3; 
-    var breaking = -maxSpeed / 2; 
-    var decel = -maxSpeed / 5; 
-    var offRoadDecel = -maxSpeed / 2; 
-    var offRoadLimit = maxSpeed / 4; 
-    var keyLeft = false; 
-    var keyRight = false; 
-    var keyFaster = false; 
-    var keySlower = false; 
-    var looped = 0; 
-    var prevSegment = 0; 
-    var redLightStatus = 2; 
-    var redLightDistance = 200; 
-    var maxWaitingAmberTime = 1.0; 
-    var minAmberTime = 2.5; 
-    var maxAmberTime = 2.5; 
-    var triggerRedDistance = 190; 
-    var redChance = 0.85; 
-    var missingRedFlag = false; 
-    var correctStop = 0; 
-    var incorrectStop = 0; 
-    var amberTrigger; 
-    var greenTrigger; 
-    var redTrigger; 
-    var brakeState = false; 
-    var resetFlag = false; 
-    var cleanFlag = false; 
-    var checkedFlag = false; 
-    var zeroSpeedFlag = false; 
-    var prevStage = -1; 
-    var virtualDistance = 0; 
-    var virtualSpeed = 0; 
-    var resultToDisplay = ' ';
-
-    function intValue(id) {
-      return parseInt(document.getElementById(id).value);
-    }
-
-    function updateSliders(obj) {
-      if (intValue("midDistance") > intValue("longDistance")) {
-        document.getElementById("midDistance").value = document.getElementById("longDistance").value;
-        document.getElementById("midDistanceDisplay").innerText = document.getElementById("longDistance").value;
-      }
-      if (intValue("shortDistance") > intValue("midDistance")) {
-        document.getElementById("shortDistance").value = document.getElementById("midDistance").value;
-        document.getElementById("shortDistanceDisplay").innerText = document.getElementById("midDistance").value;
-      }
-      if (intValue("lowSpeed") > intValue("midSpeed")) {
-        document.getElementById("lowSpeed").value = document.getElementById("midSpeed").value;
-        document.getElementById("lowSpeedDisplay").innerText = document.getElementById("midSpeed").value;
-      }
-      var sourceId = obj.id;
-      var targetId = sourceId + "Display";
-      document.getElementById(targetId).innerText = document.getElementById(sourceId).value;
-      if (obj.id === "midSpeed") {
-        document.getElementById("highSpeedDisplay").innerText = document.getElementById("midSpeed").value;
-      }
-    }
-
-    window.Dom.on('roadWidth', 'change', function (ev) { window.Dom.blur(ev); reset({ roadWidth: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max'))) }); });
-    window.Dom.on('cameraHeight', 'change', function (ev) { window.Dom.blur(ev); reset({ cameraHeight: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max'))) }); });
-    window.Dom.on('drawDistance', 'change', function (ev) { window.Dom.blur(ev); reset({ drawDistance: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max'))) }); });
-    window.Dom.on('fieldOfView', 'change', function (ev) { window.Dom.blur(ev); reset({ fieldOfView: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max'))) }); });
-    window.Dom.on('fogDensity', 'change', function (ev) { window.Dom.blur(ev); reset({ fogDensity: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max'))) }); });
-
-    function refreshTweakUI() {
-      window.Dom.get('lanes').selectedIndex = lanes - 1;
-      window.Dom.get('currentRoadWidth').innerHTML = window.Dom.get('roadWidth').value = roadWidth;
-      window.Dom.get('currentCameraHeight').innerHTML = window.Dom.get('cameraHeight').value = cameraHeight;
-      window.Dom.get('currentDrawDistance').innerHTML = window.Dom.get('drawDistance').value = drawDistance;
-      window.Dom.get('currentFieldOfView').innerHTML = window.Dom.get('fieldOfView').value = fieldOfView;
-      window.Dom.get('currentFogDensity').innerHTML = window.Dom.get('fogDensity').value = fogDensity;
-    }
-
-    function collect() {
-      window.mode = 'train';
-      document.getElementById('runningMode').innerText = 'Data Collection';
-      aia_send("dataCollection");
-    }
-
-    function train_page() {
-      aia_send("startTraining");
-      return _train_page.apply(this, arguments);
-    }
-
-    function _train_page() {
-      _train_page = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                pause = true;
-                _context.next = 3;
-                return window.trainModel();
-              case 3:
-                return _context.abrupt("return", _context.sent);
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-      return _train_page.apply(this, arguments);
-    }
-
-    function changeWeather() {
-      if (window.weather === 'normal' || !window.weather) {
-        window.weather = 'rainy';
-        background = new Image();
-        background.setAttribute('src', 'images/background.dark.png');
-        COLORS.FOG = "#2A323A";
-        for (var j = 0; j < segments.length; j++) {
-          if (segments[j]["color"].road === COLORS["LIGHT"].road) segments[j]["color"] = COLORS["DKRLGT"];
-          if (segments[j]["color"].road === COLORS["DARK"].road) segments[j]["color"] = COLORS["DKR"];
-        }
-        segments[redLightDistance].color = COLORS.DKRREDD;
-        segments[redLightDistance - 20].color = COLORS.DKRGRN;
-      } else {
-        window.weather = 'normal';
-        background = new Image();
-        background.setAttribute('src', 'images/background.png');
-        COLORS.FOG = "#005108";
-        for (var j = 0; j < segments.length; j++) {
-          if (segments[j]["color"].road === COLORS["DKRLGT"].road) segments[j]["color"] = COLORS["LIGHT"];
-          if (segments[j]["color"].road === COLORS["DARK"].road) segments[j]["color"] = COLORS["DARK"];
-        }
-        segments[redLightDistance].color = COLORS.RED;
-        segments[redLightDistance - 20].color = COLORS.GREEN;
-      }
-      aia_send("weather");
-    }
-
-    function fit() {
-      window.mode = 'fit';
-      document.getElementById('runningMode').innerText = 'Go AI';
-    }
-
-    function getBrakeLevel(speed, distance, redLightStatus) {
-      document.getElementById("speedDisplay").innerText = Math.round(speed);
-      document.getElementById("distanceDisplay").innerText = distance;
-      var stage_row = 0;
-      var stage_col = 0;
-      if (distance < intValue("shortDistance")) { stage_col = 0; } 
-      else if (distance < intValue("midDistance")) { stage_col = 1; } 
-      else { stage_col = 2; }
-      if (speed < intValue("lowSpeed")) { stage_row = 0; } 
-      else if (speed < intValue("midSpeed")) { stage_row = 1; } 
-      else { stage_row = 2; }
-      
-      var currentStageString = "stage" + stage_row + "_" + stage_col;
-      var currentCellString = "cell" + stage_row + "_" + stage_col;
-      
-      if (prevStage !== currentStageString) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-        try {
-          for (var _iterator = document.querySelectorAll('#rules td')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var item = _step.value; item.style.backgroundColor = "#FFF";
-          }
-        } catch (err) { _didIteratorError = true; _iteratorError = err; }
-        document.getElementById(currentCellString).style.backgroundColor = "#90CDF4";
-        prevStage = currentStageString;
-      }
-      
-      var currentStageValue = document.getElementById(currentStageString).value;
-      var brakeLevel = 0;
-      if (currentStageValue === 'Hard Brake' || currentStageValue === '2') { brakeLevel = 2; } 
-      else if (currentStageValue === 'Soft Brake' || currentStageValue === '1') { brakeLevel = 1; } 
-      else { brakeLevel = 0; }
-      
-      return redLightStatus === 2 ? 0 : brakeLevel;
-    }
-
-    function convertToGlobalActionBuffer(state) {
-      resultToDisplay = state;
-      if (redLightStatus === 2 && state === 'Success') { return; }
-      window.actionBuffer.pop();
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-      try {
-        for (var _iterator = window.actionBuffer[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var item = _step.value;
-          var t = item.slice();
-          if (state === 'Success' && window.mode === 'train') { t.push(0); window.trainingData.push(t); } 
-          else { t.push(1); window.trainingData.push(t); }
-        }
-      } catch (err) { _didIteratorError = true; _iteratorError = err; }
-      window.actionBuffer.length = 0;
-      document.getElementById("samples").innerText = window.trainingData.length;
-    }
-
-    function changeToGreenLights() {
-      redLightStatus = 2;
-      if (segments[redLightDistance + 4] && segments[redLightDistance + 4].sprites[0]) {
-        segments[redLightDistance + 4].sprites[0].source = SPRITES.GREEN;
-      }
-      looped = 0;
-      window.amberTime = minAmberTime;
-      document.getElementById('light').innerText = 'Green';
-    }
-
-    function amberCountDown() {
-      window.amberTime -= 0.03;
-      if (window.amberTime < 0) { window.amberTime = 0; clearInterval(amberCountDown); }
-    }
-
-    function changeToAmberLights() {
-      redLightStatus = 1;
-      if (segments[redLightDistance + 4] && segments[redLightDistance + 4].sprites[0]) {
-        segments[redLightDistance + 4].sprites[0].source = SPRITES.AMBER;
-      }
-      redTrigger = setTimeout(changeToRedLights, 1000 * minAmberTime);
-      setInterval(amberCountDown, 30);
-      document.getElementById('light').innerText = 'Amber';
-    }
-
-    function changeToRedLights() {
-      redLightStatus = 0;
-      if (segments[redLightDistance + 4] && segments[redLightDistance + 4].sprites[0]) {
-        segments[redLightDistance + 4].sprites[0].source = SPRITES.RED;
-      }
-      window.amberTime = 0;
-      document.getElementById('light').innerText = 'Red';
-    }
-
-    function update(dt) {
-      position = Util.increase(position, dt * speed, trackLength);
-      var currentSegment = findSegment(position).index;
-      if (currentSegment === 1 && !checkedFlag) {
-        cleanFlag = false;
-        checkedFlag = true;
-        if (Math.random() < redChance) {
-          amberTrigger = setTimeout(changeToAmberLights, 1000 + Math.random() * maxWaitingAmberTime * (maxSpeed / speed) * 1000);
-        }
-      }
-      if (currentSegment + 6 > redLightDistance && prevSegment + 6 <= redLightDistance) {
-        if (redLightStatus === 0) { incorrectStop += 1; aia_send("incorrectStop"); convertToGlobalActionBuffer('Failure'); } 
-        else { correctStop += 1; aia_send("correctStop"); convertToGlobalActionBuffer('Success'); }
-        document.getElementById("successful").innerText = correctStop.toString();
-        document.getElementById("failed").innerText = incorrectStop.toString();
-        clearTimeout(amberTrigger); clearTimeout(redTrigger);
-        changeToGreenLights(); checkedFlag = false;
-        speed = Math.random() * maxSpeed / 3 * 2 + maxSpeed / 3;
-        pause = true;
-      }
-      if (speed === 0 && !zeroSpeedFlag) {
-        if (currentSegment + 6 <= redLightDistance && currentSegment + 6 > redLightDistance - 20) {
-          if (redLightStatus !== 2) { correctStop += 1; convertToGlobalActionBuffer('Success'); } 
-          else { incorrectStop += 1; aia_send("incorrectStop"); convertToGlobalActionBuffer('Failure'); }
-        } else {
-          incorrectStop += 1; aia_send("incorrectStop"); convertToGlobalActionBuffer('Failure');
-        }
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
-        try {
-          for (var _iterator2 = document.querySelectorAll('#rules td')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var item = _step2.value; item.style.backgroundColor = "#FFF";
-          }
-        } catch (err) { _didIteratorError2 = true; _iteratorError2 = err; }
-        zeroSpeedFlag = true; checkedFlag = false;
-        setTimeout(function () { changeToGreenLights(); reset({ resetPosition: true }); speed = Math.random() * maxSpeed / 3 * 2 + maxSpeed / 3; }, 2000);
-        clearTimeout(amberTrigger); clearTimeout(redTrigger);
-        document.getElementById("successful").innerText = correctStop.toString();
-        document.getElementById("failed").innerText = incorrectStop.toString();
-        pause = true;
-      }
-      virtualSpeed = speed / fps / 2;
-      if (redLightDistance - (currentSegment % segments.length + 6) > 0) {
-        virtualDistance = redLightDistance - (currentSegment % segments.length + 6);
-      } else {
-        virtualDistance = redLightDistance + (segments.length - currentSegment % segments.length - 6);
-      }
-      var brakeLevel = 0;
-      if (window.mode === 'test') { brakeLevel = window.test(virtualSpeed, virtualDistance, redLightStatus); } 
-      else { brakeLevel = getBrakeLevel(virtualSpeed, virtualDistance, redLightStatus); }
-      
-      var brakeState = false;
-      var breaking = 0;
-      if (window.mode == 'train') {
-        if (keyLeft) { brakeState = true; breaking = window.weather === 'normal' ? -maxSpeed * 2 / 3 : -maxSpeed / 4; } 
-        else { brakeState = false; breaking = 0; }
-      } else if (window.mode == 'fit' || window.mode == 'test') {
-        if (brakeLevel === 2) { brakeState = true; breaking = window.weather === 'normal' ? -maxSpeed * 2 / 3 : -maxSpeed / 4; } 
-        else if (brakeLevel === 1) { brakeState = true; breaking = window.weather === 'normal' ? -maxSpeed / 3 : -maxSpeed / 6; } 
-        else { brakeState = false; breaking = 0; }
-      }
-      if (brakeState) {
-        document.getElementById("stage").innerText = "Braking";
-        document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,0,0,0.3)';
-      } else {
-        document.getElementById("stage").innerText = "No Brake";
-        document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,255,255,0)';
-      }
-      if (window.mode == 'train') {
-        if ((Math.random() < virtualSpeed / 75 / 2 || keyLeft || keyRight) && virtualSpeed > 0.1) {
-          window.actionBuffer.push([window.weather === "normal" ? 0 : 1, window.amberTime, virtualDistance, virtualSpeed, keyLeft ? 1 : 0]);
-        }
-      } else if (window.mode == 'test') {
-        if (Math.random() < virtualSpeed / 75 / 2 && virtualSpeed > 0.1) {
-          window.actionBuffer.push([window.weather === "normal" ? 0 : 1, window.amberTime, virtualDistance, virtualSpeed, brakeLevel]);
-        }
-      }
-      if (brakeState) speed = Util.accelerate(speed, breaking, dt);
-      if (virtualSpeed < 1) speed = 0;
-      playerX = Util.limit(playerX, -2, 2);
-      speed = Util.limit(speed, 0, maxSpeed);
-      prevSegment = currentSegment;
-    }
-
-    function render() {
-      var baseSegment = findSegment(position);
-      var maxy = height;
-      ctx.clearRect(0, 0, width, height);
-      window.Render.background(ctx, background, width, height, window.BACKGROUND.SKY);
-      window.Render.background(ctx, background, width, height, window.BACKGROUND.HILLS);
-      window.Render.background(ctx, background, width, height, window.BACKGROUND.TREES);
-      var n, segment;
-      for (n = 0; n < drawDistance; n++) {
-        segment = segments[(baseSegment.index + n) % segments.length];
-        segment.looped = segment.index < baseSegment.index;
-        segment.fog = window.Util.exponentialFog(n / drawDistance, fogDensity);
-        window.Util.project(segment.p1, playerX * roadWidth, cameraHeight, position - (segment.looped ? trackLength : 0), cameraDepth, width, height, roadWidth);
-        window.Util.project(segment.p2, playerX * roadWidth, cameraHeight, position - (segment.looped ? trackLength : 0), cameraDepth, width, height, roadWidth);
-        if (segment.p1.camera.z <= cameraDepth || segment.p2.screen.y >= maxy) continue;
-        window.Render.segment(ctx, width, lanes, segment.p1.screen.x, segment.p1.screen.y, segment.p1.screen.w, segment.p2.screen.x, segment.p2.screen.y, segment.p2.screen.w, segment.fog, segment.color);
-        maxy = segment.p2.screen.y;
-      }
-      window.Render.player(ctx, width, height, resolution, roadWidth, sprites, speed / maxSpeed, cameraDepth / playerZ, width / 2, height, 0, 0);
-      for (n = 0; n < drawDistance; n++) {
-        segment = segments[(baseSegment.index + n) % segments.length];
-        for (i = 0; i < segment.sprites.length; i++) {
-          sprite = segment.sprites[i]; spriteScale = segment.p1.screen.scale;
-          spriteX = segment.p1.screen.x + spriteScale * sprite.offset * roadWidth * width / 2; spriteY = segment.p1.screen.y;
-          window.Render.sprite(ctx, width, height, resolution, roadWidth, sprites, sprite.source, spriteScale, spriteX, spriteY, sprite.offset < 0 ? -1 : 0, -1, segment.clip);
-        }
-      }
-      var speed_display = document.getElementById("canvas_translation_helper_Speed").innerText;
-      var distance_display = document.getElementById("canvas_translation_helper_Distance").innerText;
-      var successful_display = document.getElementById("canvas_translation_helper_Successful").innerText;
-      var failed_display = document.getElementById("canvas_translation_helper_Failed").innerText;
-      var start_display = document.getElementById("canvas_translation_helper_Start").innerText;
-      
-      document.getElementById("stageDisplay").innerText = document.getElementById("stage").innerText;
-      if (pause === true) {
-        ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.fillRect(canvas.width / 10, canvas.height / 4, canvas.width / 10 * 8, canvas.height / 3);
-        ctx.font = "30px sans-serif"; ctx.fillStyle = "#000"; ctx.textAlign = "center";
-        if (resultToDisplay === 'Success') { ctx.fillText(successful_display, canvas.width / 2, canvas.height / 3 + 20); } 
-        else if (resultToDisplay === 'Failure') { ctx.fillText(failed_display, canvas.width / 2, canvas.height / 3 + 20); }
-        ctx.font = "20px sans-serif"; ctx.fillText(start_display, canvas.width / 2, canvas.height / 2 + 20);
-      }
-    }
-
-    function addSprite(segments, n, sprite, offset) {
-      segments[n].sprites.push({ source: sprite, offset: offset });
-    }
-
-    function resetRoad() {
-      segments = [];
-      for (var n = 0; n < 250; n++) {
-        segments.push({
-          index: n, p1: { world: { z: n * segmentLength }, camera: {}, screen: {} },
-          p2: { world: { z: (n + 1) * segmentLength }, camera: {}, screen: {} },
-          color: Math.floor(n / rumbleLength) % 2 ? window.COLORS.DARK : window.COLORS.LIGHT, sprites: []
-        });
-      }
-      if (segments[redLightDistance + 4]) addSprite(segments, redLightDistance + 4, window.SPRITES.GREEN, -1);
-      segments[redLightDistance].color = window.COLORS.RED;
-      segments[redLightDistance - 20].color = window.COLORS.GREEN;
-      trackLength = segments.length * segmentLength;
-    }
-
-    function findSegment(z) {
-      return segments[Math.floor(z / segmentLength) % segments.length];
-    }
-
-    window.Game.run({
-      canvas: canvas, render: render, update: update, stats: stats, step: step, images: ["background", "sprites"],
-      keys: [
-        { keys: [window.KEY.A, window.KEY.B], mode: 'down', action: function action() { keyLeft = true; } },
-        { keys: [window.KEY.RIGHT, window.KEY.D], mode: 'down', action: function action() { keyRight = true; } },
-        { keys: [window.KEY.UP, window.KEY.W], mode: 'down', action: function action() { keyFaster = true; } },
-        { keys: [window.KEY.DOWN, window.KEY.S], mode: 'down', action: function action() { keySlower = true; } },
-        { keys: [window.KEY.A, window.KEY.B], mode: 'up', action: function action() { keyLeft = false; } },
-        { keys: [window.KEY.RIGHT, window.KEY.D], mode: 'up', action: function action() { keyRight = false; } },
-        { keys: [window.KEY.UP, window.KEY.W], mode: 'up', action: function action() { keyFaster = false; } },
-        { keys: [window.KEY.DOWN, window.KEY.S], mode: 'up', action: function action() { keySlower = false; } }
-      ],
-      ready: function ready(images) { background = images[0]; sprites = images[1]; reset(); }
-    });
-
-    function reset(options) {
-      options = options || {};
-      canvas.width = width = window.Util.toInt(options.width, width);
-      canvas.height = height = window.Util.toInt(options.height, height);
-      lanes = window.Util.toInt(options.lanes, lanes);
-      roadWidth = window.Util.toInt(options.roadWidth, roadWidth);
-      cameraHeight = window.Util.toInt(options.cameraHeight, cameraHeight);
-      drawDistance = window.Util.toInt(options.drawDistance, drawDistance);
-      fogDensity = window.Util.toInt(options.fogDensity, fogDensity);
-      fieldOfView = window.Util.toInt(options.fieldOfView, fieldOfView);
-      segmentLength = window.Util.toInt(options.segmentLength, segmentLength);
-      rumbleLength = window.Util.toInt(options.rumbleLength, rumbleLength);
-      cameraDepth = 1 / Math.tan(fieldOfView / 2 * Math.PI / 180);
-      playerZ = cameraHeight * cameraDepth;
-      resolution = height / 480;
-      speed = (1 - Math.random() * Math.random()) * maxSpeed / 2 + maxSpeed / 2;
-      brakeState = false; resetFlag = false; missingRedFlag = false; checkedFlag = false; cleanFlag = false; redLightStatus = 2;
-      if (options.resetPosition) { position = 0; zeroSpeedFlag = false; }
-      
-      // 呼叫初始化綁定
-      var shortDistance = document.getElementById("shortDistance");
-      var midDistance = document.getElementById("midDistance");
-      var longDistance = document.getElementById("longDistance");
-      var lowSpeed = document.getElementById("lowSpeed");
-      var midSpeed = document.getElementById("midSpeed");
-      
-      shortDistance.oninput = function () { updateSliders(shortDistance); };
-      midDistance.oninput = function () { updateSliders(midDistance); };
-      longDistance.oninput = function () { updateSliders(longDistance); };
-      lowSpeed.oninput = function () { updateSliders(lowSpeed); };
-      midSpeed.oninput = function () { updateSliders(midSpeed); };
-      
-      document.getElementById("shortDistanceDisplay").innerText = shortDistance.value;
-      document.getElementById("midDistanceDisplay").innerText = midDistance.value;
-      document.getElementById("longDistanceDisplay").innerText = longDistance.value;
-      document.getElementById("lowSpeedDisplay").innerText = lowSpeed.value;
-      document.getElementById("midSpeedDisplay").innerText = midSpeed.value;
-      document.getElementById("highSpeedDisplay").innerText = midSpeed.value;
-      
-      refreshTweakUI();
-      if (segments.length == 0 || options.segmentLength || options.rumbleLength) resetRoad();
-    }
-
-    function resetAll() {
-      correctStop = 0; incorrectStop = 0;
-      document.getElementById("successful").innerText = correctStop.toString();
-      document.getElementById("failed").innerText = incorrectStop.toString();
-      changeToGreenLights();
-      clearTimeout(amberTrigger); clearTimeout(redTrigger);
-      reset({ resetPosition: true });
-    }
-  </script>
-
-  <script>aia_send('startGame');</script>
-</body>
-</html>
+    
+    <hr>
+    <div id="evaluation">
+      <h3><i18n vanilla-i18n="taskfive_step_3">步驟三:</i18n>
+      <button class="pure-button" style="border:1px solid #999" id="testButton" onclick="aia_send('modelEvaluation');window.test(); this.blur()" disabled="disabled"><i18n vanilla-i18n="taskfive_model_evaluation_3">評估模型</i18n></button></h3>
+    </div>
+    
+    <hr>
+    <div id="weather">
+      <h3><i18n vanilla-i18n="taskfive_step_4">步驟四:</i18n></h3>
+      <p><button id="weatherChange" class="pure-button" style="background: rgb(66, 1
