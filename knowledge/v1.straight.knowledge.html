@@ -53,13 +53,25 @@
   background-color: #c1beed;
 }
 
-/* 確保我們解除隱藏的進階面板有漂亮的邊框 */
-.advanced-panel {
-  background-color: #f9f9f9;
-  border: 2px solid #440a67;
-  border-radius: 6px;
+/* 突出教學對比的區塊樣式 */
+.teaching-comparison-box {
+  background-color: #f4e8fa;
+  border: 3px dashed #7a16b1;
+  border-radius: 8px;
   padding: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+}
+.teaching-title {
+  margin-top: 0;
+  color: #440a67;
+  border-bottom: 2px solid #440a67;
+  padding-bottom: 5px;
+}
+.highlight-text {
+  background-color: #fff2cc;
+  padding: 2px 5px;
+  font-weight: bold;
+  color: #cc0000;
 }
 </style>
 
@@ -86,57 +98,63 @@
 <body> 
   <div id="wrapper">
 
-  <div class="advanced-panel">
-    <h4 style="margin-top:0; color:#440a67; font-size:16px;">⚙️ 畫面與環境參數設定 (Advanced Environment Settings)</h4>
-    <table id="controls" class="pure-table pure-table-horizontal" style="width: 100%; font-size: 14px;">
-      <tr>
-        <td colspan="2">
-          <a href="v1.straight.knowledge.fullAI.html" class="pure-button" style="width:100%">straight</a>
-        </td>
-      </tr>
-      <tr><td id="fps" colspan="2" align="right"></td></tr>
-      <tr>
-        <th><label for="resolution">Resolution :</label></th>
-        <td>
-          <select id="resolution" style="width:100%">
-            <option value="fine">Fine (1280x960)</option>
-            <option selected="" value="high">High (1024x768)</option>
-            <option value="medium">Medium (640x480)</option>
-            <option value="low">Low (480x360)</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="lanes">Lanes :</label></th>
-        <td>
-          <select id="lanes" style="width:100%">
-            <option>1</option>
-            <option>2</option>
-            <option selected="">3</option>
-            <option>4</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th>
-        <td><input id="roadWidth" type="range" min="500" max="3000" title="integer (500-3000)" style="width:100%"></td>
-      </tr>
-      <tr>
-        <th><label for="cameraHeight">Camera Height (<span id="currentCameraHeight"></span>) :</label></th>
-        <td><input id="cameraHeight" type="range" min="500" max="5000" title="integer (500-5000)" style="width:100%"></td>
-      </tr>
-      <tr>
-        <th><label for="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th>
-        <td><input id="drawDistance" type="range" min="100" max="500" title="integer (100-500)" style="width:100%"></td>
-      </tr>
-      <tr>
-        <th><label for="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th>
-        <td><input id="fieldOfView" type="range" min="80" max="140" title="integer (80-140)" style="width:100%"></td>
-      </tr>
-      <tr>
-        <th><label for="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th>
-        <td><input id="fogDensity" type="range" min="0" max="50" title="integer (0-50)" style="width:100%"></td>
-      </tr>
+  <table id="controls" style="display: none;">
+    <tr><td colspan="2"><a href="v1.straight.knowledge.fullAI.html">straight</a></td></tr>
+    <tr><td id="fps" colspan="2" align="right"></td></tr>
+    <tr><th><label for="resolution">Resolution :</label></th><td><select id="resolution"><option value="fine">Fine</option><option selected="" value="high">High</option></select></td></tr>
+    <tr><th><label for="lanes">Lanes :</label></th><td><select id="lanes"><option>1</option><option>2</option><option selected="">3</option></select></td></tr>
+    <tr><th><label for="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th><td><input id="roadWidth" type="range" min="500" max="3000"></td></tr>
+    <tr><th><label for="cameraHeight">Camera Height (<span id="currentCameraHeight"></span>) :</label></th><td><input id="cameraHeight" type="range" min="500" max="5000"></td></tr>
+    <tr><th><label for="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th><td><input id="drawDistance" type="range" min="100" max="500"></td></tr>
+    <tr><th><label for="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th><td><input id="fieldOfView" type="range" min="80" max="140"></td></tr>
+    <tr><th><label for="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th><td><input id="fogDensity" type="range" min="0" max="50"></td></tr>
+  </table>
+
+  <div class="teaching-comparison-box">
+    <h3 class="teaching-title">🧠 核心概念可視化：基於知識的推理 (Knowledge-Based Matrix)</h3>
+    <p style="font-size: 14px; margin-bottom: 10px; line-height: 1.4;">
+      💡 <b>教學提示：</b> 下方表格即為系統內建的<b>「人類專家知識」</b>。在不收集任何數據的情況下啟動 <span class="highlight-text">Go AI</span>，汽車也能根據這套物理知識安全剎車。而數據訓練的目的，是微調滑桿中的「距離與時速邊界」，以適應雨天等不同環境。
+    </p>
+    
+    <table id="rules" class="pure-table pure-table-bordered" style="width: 100%; font-size: 13px; background: white;">
+      <thead>
+        <tr style="background-color: #eee;">
+          <th>車速 \ 距離</th>
+          <td>
+            <b>近距離 (Short)</b> &lt; <span id="shortDistanceDisplay" style="color:blue;font-weight:bold;">100</span> m<br> 
+            <input id="shortDistance" type="range" min="0" max="400" value="100" onchange="updateSliders(this)" style="width:100px;">
+          </td>
+          <td><b>中距離 (Mid)</b> &lt; <span id="midDistanceDisplay" style="color:blue;font-weight:bold;">200</span> m<br> 
+            <input id="midDistance" type="range" min="0" max="400" value="200" onchange="updateSliders(this)" style="width:100px;">
+          </td>
+          <td><b>遠距離 (Long)</b> &lt; <span id="longDistanceDisplay" style="color:blue;font-weight:bold;">400</span> m<br> 
+            <input id="longDistance" type="range" min="0" max="400" value="400" onchange="updateSliders(this)" style="width:100px;">
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>低車速 &lt; <span id="lowSpeedDisplay" style="color:green;font-weight:bold;">30</span> km/h<br> 
+            <input id="lowSpeed" type="range" min="20" max="80" value="30" onchange="updateSliders(this)" style="width:100px;">
+          </th>
+          <td><select id="stage0_0" disabled><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td><select id="stage0_1" disabled><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+          <td><select id="stage0_2" disabled><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+        </tr>
+        <tr>
+          <th>中車速 &lt; <span id="midSpeedDisplay" style="color:green;font-weight:bold;">60</span> km/h<br> 
+            <input id="midSpeed" type="range" min="20" max="80" value="60" onchange="updateSliders(this);" style="width:100px;"></th>
+          <td><select id="stage1_0" disabled><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td><select id="stage1_1" disabled><option>No Brake</option><option selected>Soft Brake</option><option>Hard Brake</option></select></td>
+          <td><select id="stage1_2" disabled><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+        </tr>
+        <tr>
+          <th>高車速 &gt; <span id="highSpeedDisplay" style="color:green;font-weight:bold;">60</span> km/h</th>
+          <td><select id="stage2_0" disabled><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td><select id="stage2_1" disabled><option>No Brake</option><option>Soft Brake</option><option selected>Hard Brake</option></select></td>
+          <td><select id="stage2_2" disabled><option selected>No Brake</option><option>Soft Brake</option><option>Hard Brake</option></select></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
@@ -148,45 +166,23 @@
   <div class="content">
     <table cellspacing="5" cellpadding="5">
       <tr><td valign="top" colspan="2"><b><i18n vanilla-i18n="taskthree">活動三：知識推理的剎車</i18n></b></td></tr>
-      <tr><td valign="top">1.</td><td valign="top"><i18n vanilla-i18n="taskfive_in">進入 </i18n> <span style="padding: 2px; color: rgb(0,0,0); background-color: rgb(200, 200, 200);"><b><i18n vanilla-i18n="taskfive_data_collection">數據收集</i18n></b></span><i18n vanilla-i18n="taskfive_mode"></i18n><i18n vanilla-i18n="taskfive_press_mid">模式，在交通燈信號為紅色時按B鍵讓汽車停在綠色和紅色線之間；在信號為黃色時可視乎距離通過或在交通燈前停下；在信號為綠色讓汽車通過交通燈</i18n> </td></tr>
-      <tr><td valign="top">2.</td><td valign="top"><i18n vanilla-i18n="taskfive_when_the_number">當收集到足夠良好數據時，按</i18n> <span style="padding: 2px; color: rgb(255,255,255); background-color: rgb(0, 200, 0);"><b><i18n vanilla-i18n="taskfive_train_from">訓練模型</i18n> </b></span> <i18n vanilla-i18n="taskfive_button_for"> 按鈕以訓練AI自動駕駛模型</i18n></td></tr>      
-      <tr><td valign="top">3.</td><td valign="top"><i18n vanilla-i18n="taskfive_press">按</i18n> <span style="padding: 2px; color: rgb(0,0,0); background-color: rgb(200,200,200);"><b><i18n vanilla-i18n="taskfive_model_evaluation">評估模型</i18n></b></span> <i18n vanilla-i18n="taskfive_to_see_the">按鈕以觀察AI自動駕駛模型的表現</i18n> </td></tr>            
-      <tr><td valign="top">4.</td><td valign="top"><i18n vanilla-i18n="taskfive_system_automatically">系統將應用AI自動駕駛模型在模擬器中並自動依照剎車結果計算分數</i18n></td></tr>                  
-      <tr><td valign="top">5</td><td valign="top"><i18n vanilla-i18n="taskfive_press">按</i18n> <span style="padding: 2px; color: rgb(255,255,255); background-color: rgb(0, 187, 211);"><b><i18n vanilla-i18n="taskfive_change_weather">轉換天氣!</i18n></b></span> <i18n vanilla-i18n="taskfive_to_train_the">按鈕並觀察自動駕駛模型的表現</i18n></td></tr>                        
+      <tr><td valign="top">1.</td><td valign="top"><i18n vanilla-i18n="taskfive_in">進入 </i18n> <span style="padding: 2px; color: rgb(0,0,0); background-color: rgb(200, 200, 200);"><b><i18n vanilla-i18n="taskfive_data_collection">數據收集</i18n></b></span>模式，在交通燈信號為紅色時按B鍵讓汽車停在綠色和紅色線之間。</td></tr>
+      <tr><td valign="top">2.</td><td valign="top">當收集到足夠良好數據時，按 <span style="padding: 2px; color: rgb(255,255,255); background-color: rgb(0, 200, 0);"><b><i18n vanilla-i18n="taskfive_train_from">訓練模型</i18n> </b></span> 按鈕。</td></tr>      
+      <tr><td valign="top">3.</td><td valign="top">按 <span style="padding: 2px; color: rgb(0,0,0); background-color: rgb(200,200,200);"><b><i18n vanilla-i18n="taskfive_model_evaluation">評估模型</i18n></b></span> 觀察表現。</td></tr>            
+      <tr><td valign="top">4.</td><td valign="top">按 <span style="padding: 2px; color: rgb(255,255,255); background-color: rgb(0, 187, 211);"><b><i18n vanilla-i18n="taskfive_change_weather">轉換天氣!</i18n></b></span> 觀察自動駕駛在極端環境下的推理與數據微調表現。</td></tr>                        
     </table>
   </div>
 
   <div id="instructions">
     <h3><i18n vanilla-i18n="taskthree_game_statistics">遊戲數據</i18n></h3>
     <table class="pure-table pure-table-horizontal" style="width: 100%">
-      <tr style="display:none;">
-        <td><i18n vanilla-i18n="taskthree_speed">Speed</i18n></td>
-        <td><span id="speedDisplay">0</span> km/h</td>
-      </tr>
-      <tr style="display:none;">
-        <td><i18n vanilla-i18n="taskthree_distance">Distance:</i18n></td>
-        <td><span id="distanceDisplay">0</span> m</td>
-      </tr>
-      <tr>
-        <td><b>狀態:</b></td>
-        <td><span id="stage">不剎車</span></td>
-      </tr>
-      <tr>
-        <td><b>交通燈信號:</b></td>
-        <td><span id="light" style="font-weight: bold; color: green;">綠色</span></td>
-      </tr>
-      <tr>
-        <td><b>現在模式:</b></td>
-        <td><span id="runningMode">數據收集</span></td>
-      </tr>
-      <tr>
-        <td><span style="color:#226d35"><b>成功次數:</b></span></td>
-        <td><span id="successful" style="color:#226d35; font-weight: bold;">0</span></td>
-      </tr>
-      <tr>
-        <td><span style="color:#de364c"><b>失敗次數:</b></span></td>
-        <td><span id="failed" style="color:#de364c; font-weight: bold;">0</span></td>
-      </tr> 
+      <tr style="display:none;"><td>Speed</td><td><span id="speedDisplay">0</span> km/h</td></tr>
+      <tr style="display:none;"><td>Distance:</td><td><span id="distanceDisplay">0</span> m</td></tr>
+      <tr><td><b>狀態:</b></td><td><span id="stage">不剎車</span></td></tr>
+      <tr><td><b>交通燈信號:</b></td><td><span id="light" style="font-weight: bold; color: green;">綠色</span></td></tr>
+      <tr><td><b>現在模式:</b></td><td><span id="runningMode" style="font-weight: bold; color: #7a16b1;">數據收集</span></td></tr>
+      <tr><td><span style="color:#226d35"><b>成功次數:</b></span></td><td><span id="successful" style="color:#226d35; font-weight: bold;">0</span></td></tr>
+      <tr><td><span style="color:#de364c"><b>失敗次數:</b></span></td><td><span id="failed" style="color:#de364c; font-weight: bold;">0</span></td></tr> 
     </table>
 
     <div hidden="">
@@ -228,19 +224,14 @@
       <p><button id="weatherChange" class="pure-button" style="background: rgb(66, 184, 221); color:white" onclick="changeWeather(); this.blur()"><i18n vanilla-i18n="taskfive_change_weather">轉換天氣!</i18n></button></p>
     </div>
 
-    <div style="display: none;">
-      <p id="trainingPanel" style="line-height: 1.5em;">
-        <br> <hr>
-        <button class="pure-button" style="background: rgb(202, 60, 60); color:white" onclick="fit(); this.blur()">Go AI</button>
-        <br>
-      </p>
+    <div style="margin-top:15px; background: #fff2cc; padding: 10px; border-radius: 4px; border: 1px solid #ffcc00;">
+      <h4 style="margin: 0 0 5px 0; color: #b78103;">🚀 直接體驗「基於知識的推理」大方向：</h4>
+      <button class="pure-button" style="background: rgb(202, 60, 60); color:white; font-weight:bold; width: 100%;" onclick="fit(); this.blur()">直接運行：Go AI (純知識規則導向)</button>
     </div>
   </div>
 
   <div id="racer">
-    <canvas id="canvas">
-      Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-    </canvas>
+    <canvas id="canvas">Sorry, your browser does not support canvas.</canvas>
     Loading...
   </div>
 
@@ -249,105 +240,9 @@
       <div class="layer" id="brakeLayer"></div>
     </div>
   </div>
-  
-  <table id="rules" class="pure-table" style="margin-top:20px; width: 60%; margin-left: 10px; display:none">
-    <thead>
-      <tr>
-        <th></th>
-        <td>
-          Short Distance &lt; <span id="shortDistanceDisplay">100</span><br> 
-          <input id="shortDistance" type="range" min="0" max="400" title="integer (0-400)" value="100" onchange="updateSliders(this)">
-        </td>
-        <td>Mid Distance &lt; <span id="midDistanceDisplay">200</span><br> 
-          <input id="midDistance" type="range" min="0" max="400" title="integer (0-400)" value="200" onchange="updateSliders(this)">
-        </td>
-        <td>Long Distance &lt; <span id="longDistanceDisplay">400</span><br> 
-          <input id="longDistance" type="range" min="0" max="400" title="integer (0-400)" value="400" onchange="updateSliders(this)">
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th>Low Speed &lt; <span id="lowSpeedDisplay">30</span><br> 
-          <input id="lowSpeed" type="range" min="20" max="80" title="integer (20-80)" value="30" onchange="updateSliders(this)">
-        </th>
-        <td>
-          <select id="stage0_0">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-        <td>
-          <select id="stage0_1">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-        <td>
-          <select id="stage0_2">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th>Mid Speed &lt; <span id="midSpeedDisplay">60</span><br> 
-          <input id="midSpeed" type="range" min="20" max="80" title="integer (20-80)" value="60" onchange="updateSliders(this);"></th>
-        <td>
-          <select id="stage1_0">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-        <td>
-          <select id="stage1_1">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-        <td>
-          <select id="stage1_2">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th>High Speed &gt; <span id="highSpeedDisplay">60</span><br> 
-        </th>
-        <td>
-          <select id="stage2_0">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-        <td>
-          <select id="stage2_1">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-        <td>
-          <select id="stage2_2">
-            <option>No Brake</option>
-            <option>Soft Brake</option>
-            <option>Hard Brake</option>
-          </select>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
   <div style="margin-top: 20px; margin-left: 10px;">
-    <button id="exitGame" class="pure-button" onclick="aia_send('exitGame');window.history.back();" style="color:white; background: rgb(0, 187, 211);"><i18n vanilla-i18n="taskfive_exit_game">離開遊戲</i18n></button>
+    <button id="exitGame" class="pure-button" onclick="aia_send('exitGame');window.history.back();" style="color:white; background: rgb(0, 187, 211);;"><i18n vanilla-i18n="taskfive_exit_game">離開遊戲</i18n></button>
   </div>
 
 </div>
@@ -355,55 +250,48 @@
 <script>
 var coll = document.getElementsByClassName("collapsible");
 var i;
-
 for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function () {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
-
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
-    }
+    if (content.style.display === "block") { content.style.display = "none"; } else { content.style.display = "block"; }
   });
 }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var fps = 60; // how many 'update' frames per second
-var step = 1 / fps; // how long is each frame (in seconds)
-var width = 1024; // logical canvas width
-var height = 768; // logical canvas height
-var segments = []; // array of road segments
-var stats = window.Game.stats('fps'); // mr.doobs FPS counter
-var canvas = window.Dom.get('canvas'); // our canvas...
-var ctx = canvas.getContext('2d'); // ...and its drawing context
-var background = null; // our background image (loaded below)
-var sprites = null; // our spritesheet (loaded below)
-var resolution = null; // scaling factor to provide resolution independence (computed)
-var roadWidth = 2000; // actually half the roads width, easier math if the road spans from -roadWidth to +roadWidth
-var segmentLength = 150; // length of a single segment
-var rumbleLength = 3; // number of segments per red/white rumble strip
-var trackLength = null; // z length of entire track (computed)
-var lanes = 3; // number of lanes
-var fieldOfView = 100; // angle (degrees) for field of view
-var cameraHeight = 1000; // z height of camera
-var cameraDepth = null; // z distance camera is from screen (computed)
-var drawDistance = 400; // number of segments to draw
-var playerX = 0; // player x offset from center of road (-1 to 1 to stay independent of roadWidth)
-var playerZ = null; // player relative z distance from camera (computed)
-var fogDensity = 5; // exponential fog density
-var position = 0; // current camera Z position (add playerZ to get player's absolute Z position)
-var maxSpeed = segmentLength / step; // top speed (ensure we can't move more than 1 segment in a single frame to make collision detection easier)
-var speed = Math.random() * maxSpeed / 3 * 2 + maxSpeed / 3; // current speed
-var accel = maxSpeed / 3; // acceleration rate
-var breaking = -maxSpeed/2; // deceleration rate when braking
-var decel = -maxSpeed / 5; // 'natural' deceleration rate when neither accelerating, nor braking
-var offRoadDecel = -maxSpeed / 2; // off road deceleration is somewhere in between
-var offRoadLimit = maxSpeed / 4; // limit when off road deceleration no longer applies
+var fps = 60;
+var step = 1 / fps;
+var width = 1024;
+var height = 768;
+var segments = [];
+var stats = window.Game.stats('fps');
+var canvas = window.Dom.get('canvas');
+var ctx = canvas.getContext('2d');
+var background = null;
+var sprites = null;
+var resolution = null;
+var roadWidth = 2000;
+var segmentLength = 150;
+var rumbleLength = 3;
+var trackLength = null;
+var lanes = 3;
+var fieldOfView = 100;
+var cameraHeight = 1000;
+var cameraDepth = null;
+var drawDistance = 400;
+var playerX = 0;
+var playerZ = null;
+var fogDensity = 5;
+var position = 0;
+var maxSpeed = segmentLength / step;
+var speed = Math.random() * maxSpeed / 3 * 2 + maxSpeed / 3;
+var accel = maxSpeed / 3;
+var breaking = -maxSpeed/2;
+var decel = -maxSpeed / 5;
+var offRoadDecel = -maxSpeed / 2;
+var offRoadLimit = maxSpeed / 4;
 
 var keyLeft = false;
 var keyRight = false;
@@ -411,7 +299,7 @@ var keyFaster = false;
 var keySlower = false;
 var looped = 0;
 var prevSegment = 0;
-var redLightStatus = 2; // Red light status 0: red, 1: amber, 2: green
+var redLightStatus = 2; 
 var redLightDistance = 200;
 var maxWaitingAmberTime = 1.0; 
 var minAmberTime = 2.5; 
@@ -432,30 +320,24 @@ var prevStage = -1;
 var virtualDistance = 0;
 var virtualSpeed = 0;
 
-function intValue(id) {
-  return parseInt(document.getElementById(id).value);
-}
+function intValue(id) { return parseInt(document.getElementById(id).value); }
 
 function updateSliders(obj) {
   if (intValue("midDistance") > intValue("longDistance")) {
     document.getElementById("midDistance").value = document.getElementById("longDistance").value;
     document.getElementById("midDistanceDisplay").innerText = document.getElementById("longDistance").value;
   }
-
   if (intValue("shortDistance") > intValue("midDistance")) {
     document.getElementById("shortDistance").value = document.getElementById("midDistance").value;
     document.getElementById("shortDistanceDisplay").innerText = document.getElementById("midDistance").value;
   }
-
   if (intValue("lowSpeed") > intValue("midSpeed")) {
     document.getElementById("lowSpeed").value = document.getElementById("midSpeed").value;
     document.getElementById("lowSpeedDisplay").innerText = document.getElementById("midSpeed").value;
   }
-
   var sourceId = obj.id;
   var targetId = sourceId + "Display";
   document.getElementById(targetId).innerText = document.getElementById(sourceId).value;
-
   if (obj.id === "midSpeed") {
     document.getElementById("highSpeedDisplay").innerText = document.getElementById("midSpeed").value;
   }
@@ -472,14 +354,10 @@ function collect() {
   aia_send("dataCollection");
 }
 
-function train_page() {
-  aia_send("startTraining");
-  return _train_page.apply(this, arguments);
-}
+function train_page() { aia_send("startTraining"); return _train_page.apply(this, arguments); }
 
 function _train_page() {
   _train_page = _asyncToGenerator(
-  /*#__PURE__*/
   regeneratorRuntime.mark(function _callee() {
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -488,10 +366,8 @@ function _train_page() {
             pause = true;
             _context.next = 3;
             return window.trainModel();
-
           case 3:
             return _context.abrupt("return", _context.sent);
-
           case 4:
           case "end":
             return _context.stop();
@@ -508,17 +384,10 @@ function changeWeather() {
     background = new Image();
     background.setAttribute('src', 'images/background.dark.png');
     COLORS.FOG = "#2A323A";
-
     for (var j = 0; j < segments.length; j++) {
-      if (segments[j]["color"].road === COLORS["LIGHT"].road) {
-        segments[j]["color"] = COLORS["DKRLGT"];
-      }
-
-      if (segments[j]["color"].road === COLORS["DARK"].road) {
-        segments[j]["color"] = COLORS["DKR"];
-      }
+      if (segments[j]["color"].road === COLORS["LIGHT"].road) { segments[j]["color"] = COLORS["DKRLGT"]; }
+      if (segments[j]["color"].road === COLORS["DARK"].road) { segments[j]["color"] = COLORS["DKR"]; }
     }
-
     segments[redLightDistance].color = COLORS.DKRREDD;
     segments[redLightDistance - 20].color = COLORS.DKRGRN;
   } else {
@@ -526,21 +395,13 @@ function changeWeather() {
     background = new Image();
     background.setAttribute('src', 'images/background.png');
     COLORS.FOG = "#005108";
-
     for (var j = 0; j < segments.length; j++) {
-      if (segments[j]["color"].road === COLORS["DKRLGT"].road) {
-        segments[j]["color"] = COLORS["LIGHT"];
-      }
-
-      if (segments[j]["color"].road === COLORS["DARK"].road) {
-        segments[j]["color"] = COLORS["DARK"];
-      }
+      if (segments[j]["color"].road === COLORS["DKRLGT"].road) { segments[j]["color"] = COLORS["LIGHT"]; }
+      if (segments[j]["color"].road === COLORS["DARK"].road) { segments[j]["color"] = COLORS["DARK"]; }
     }
-
     segments[redLightDistance].color = COLORS.RED;
     segments[redLightDistance - 20].color = COLORS.GREEN;
   }
-
   aia_send("weather");
 }
 
@@ -555,45 +416,25 @@ function getBrakeLevel(speed, distance, redLightStatus) {
   var brakeLevel = 0;
   document.getElementById("speedDisplay").innerText = Math.round(speed);
   document.getElementById("distanceDisplay").innerText = distance;
-
   if (window.weather === 'normal') {
-    if (distance < 0.7656 / 10 * speed * (0.7656 / 10 * speed) + 2) {
-      brakeLevel = 2;
-    } else {
-      brakeLevel = 0;
-    }
+    if (distance < 0.7656 / 10 * speed * (0.7656 / 10 * speed) + 2) { brakeLevel = 2; } else { brakeLevel = 0; }
   } else if (window.weather === 'rainy') {
-    if (distance < 0.94 / 10 * speed * (0.94 / 10 * speed) + 2) {
-      brakeLevel = 2;
-    } else {
-      brakeLevel = 0;
-    }
+    if (distance < 0.94 / 10 * speed * (0.94 / 10 * speed) + 2) { brakeLevel = 2; } else { brakeLevel = 0; }
   }
-
-  if (redLightStatus === 2) {
-    return 0;
-  } else {
-    return brakeLevel;
-  }
+  if (redLightStatus === 2) { return 0; } else { return brakeLevel; }
 }
 
 function convertToGlobalActionBuffer(state) {
   resultToDisplay = state;
-
-  if (redLightStatus === 2 && state === 'Success') {
-    return;
-  }
-
+  if (redLightStatus === 2 && state === 'Success') { return; }
   window.actionBuffer.pop();
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
-
   try {
     for (var _iterator = window.actionBuffer[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var item = _step.value;
       var t = item.slice();
-
       if (state === 'Success' && window.mode === 'train') {
         t.push(0);
         window.trainingData.push(t);
@@ -606,23 +447,11 @@ function convertToGlobalActionBuffer(state) {
     _didIteratorError = true;
     _iteratorError = err;
   } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
+    try { if (!_iteratorNormalCompletion && _iterator.return != null) { _iterator.return(); } } finally { if (_didIteratorError) { throw _iteratorError; } }
   }
-
   window.actionBuffer.length = 0;
   document.getElementById("samples").innerText = window.trainingData.length;
-
-  if (window.trainingData.length) {
-    document.getElementById("trainButton").removeAttribute("disabled");
-  }
+  if (window.trainingData.length) { document.getElementById("trainButton").removeAttribute("disabled"); }
 }
 
 function changeToGreenLights() {
@@ -636,11 +465,7 @@ function changeToGreenLights() {
 
 function amberCountDown() {
   window.amberTime -= 0.03;
-
-  if (window.amberTime < 0) {
-    window.amberTime = 0;
-    clearInterval(amberCountDown);
-  }
+  if (window.amberTime < 0) { window.amberTime = 0; clearInterval(amberCountDown); }
 }
 
 function changeToAmberLights() {
@@ -660,10 +485,6 @@ function changeToRedLights() {
   document.getElementById('light').style.color = 'red';
 }
 
-function brake() {
-  brakeState = true;
-}
-
 function update(dt) {
   position = Util.increase(position, dt * speed, trackLength);
   var currentSegment = findSegment(position).index;
@@ -671,7 +492,6 @@ function update(dt) {
   if (currentSegment === 1 && !checkedFlag) {
     cleanFlag = false;
     checkedFlag = true;
-
     if (Math.random() < redChance) {
       amberTrigger = setTimeout(changeToAmberLights, 1000 + Math.random() * maxWaitingAmberTime * (maxSpeed / speed) * 1000);
     }
@@ -687,7 +507,6 @@ function update(dt) {
       aia_send("correctStop");      
       convertToGlobalActionBuffer('Success');
     }
-
     document.getElementById("successful").innerText = correctStop.toString();
     document.getElementById("failed").innerText = incorrectStop.toString();
     clearTimeout(amberTrigger);
@@ -704,47 +523,16 @@ function update(dt) {
         correctStop += 1;
         convertToGlobalActionBuffer('Success');
       } else {
-        incorrectStop += 1;
-        aia_send("incorrectStop");
-        convertToGlobalActionBuffer('Failure');
+        incorrectStop += 1; aia_send("incorrectStop"); convertToGlobalActionBuffer('Failure');
       }
     } else {
-      incorrectStop += 1;
-      aia_send("incorrectStop");
-      convertToGlobalActionBuffer('Failure');
+      incorrectStop += 1; aia_send("incorrectStop"); convertToGlobalActionBuffer('Failure');
     }
-
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
-
-    try {
-      for (var _iterator2 = document.querySelectorAll('#rules td')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var item = _step2.value;
-        item.style.backgroundColor = "#FFF";
-      }
-    } catch (err) {
-      _didIteratorError2 = true;
-      _iteratorError2 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-          _iterator2.return();
-        }
-      } finally {
-        if (_didIteratorError2) {
-          throw _iteratorError2;
-        }
-      }
-    }
-
     zeroSpeedFlag = true;
     checkedFlag = false;
     setTimeout(function () {
       changeToGreenLights();
-      reset({
-        resetPosition: true
-      });
+      reset({ resetPosition: true });
       speed = Math.random() * maxSpeed / 3 * 2 + maxSpeed / 3;
     }, 2000);
     clearTimeout(amberTrigger);
@@ -756,7 +544,6 @@ function update(dt) {
 
   virtualSpeed = speed / fps / 2;
   virtualDistance = 0;
-
   if (redLightDistance - (currentSegment % segments.length + 6) > 0) {
     virtualDistance = redLightDistance - (currentSegment % segments.length + 6);
   } else {
@@ -764,7 +551,6 @@ function update(dt) {
   }
 
   var brakeLevel = 0;
-
   if (window.mode === 'test') {
     brakeLevel = window.test(virtualSpeed, virtualDistance, redLightStatus);
   } else {
@@ -778,11 +564,7 @@ function update(dt) {
     if (keyLeft) {
       brakeState = true;
       breaking = (window.weather === 'normal') ? -maxSpeed*2/3 : -maxSpeed/4;
-    } else {
-      brakeState = false;
-      breaking = 0;
     }
-
     if (brakeState) {
       document.getElementById("stage").innerText = "剎車";
       document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,0,0,0.2)';
@@ -794,11 +576,7 @@ function update(dt) {
     if (brakeLevel) {
       brakeState = true;
       breaking = (window.weather === 'normal') ? -maxSpeed*2/3 : -maxSpeed/4;
-    } else {
-      brakeState = false;
-      breaking = 0;
     }
-
     if (brakeState) {
       document.getElementById("stage").innerText = "剎車";
       document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,0,0,0.2)';
@@ -807,13 +585,8 @@ function update(dt) {
       document.getElementById("brakeLayer").style.backgroundColor = 'rgba(255,255,255,0)';
     }
   } else if (window.mode == 'test') {
-    if (brakeLevel === 0) {
-      brakeState = false;
-      breaking = 0;
-    } else if (brakeLevel === 1) {
-      brakeState = true;
-      breaking = (window.weather === 'normal') ? -maxSpeed*2/3 : -maxSpeed/4;
-    }
+    if (brakeLevel === 0) { brakeState = false; breaking = 0; } 
+    else if (brakeLevel === 1) { brakeState = true; breaking = (window.weather === 'normal') ? -maxSpeed*2/3 : -maxSpeed/4; }
   }
 
   if (window.mode == 'train') {
@@ -826,14 +599,8 @@ function update(dt) {
     }
   }
 
-  if (brakeState) {
-    speed = Util.accelerate(speed, breaking, dt);
-  }
-
-  if (virtualSpeed < 1) {
-    speed = 0;
-  }
-
+  if (brakeState) { speed = Util.accelerate(speed, breaking, dt); }
+  if (virtualSpeed < 1) { speed = 0; }
   if ((playerX < -1 || playerX > 1) && speed > offRoadLimit) speed = Util.accelerate(speed, offRoadDecel, dt);
   playerX = Util.limit(playerX, -2, 2);
   speed = Util.limit(speed, 0, maxSpeed);
@@ -855,9 +622,7 @@ function render() {
     segment.fog = window.Util.exponentialFog(n / drawDistance, fogDensity);
     window.Util.project(segment.p1, playerX * roadWidth, cameraHeight, position - (segment.looped ? trackLength : 0), cameraDepth, width, height, roadWidth);
     window.Util.project(segment.p2, playerX * roadWidth, cameraHeight, position - (segment.looped ? trackLength : 0), cameraDepth, width, height, roadWidth);
-
     if (segment.p1.camera.z <= cameraDepth || segment.p2.screen.y >= maxy) continue;
-
     window.Render.segment(ctx, width, lanes, segment.p1.screen.x, segment.p1.screen.y, segment.p1.screen.w, segment.p2.screen.x, segment.p2.screen.y, segment.p2.screen.w, segment.fog, segment.color);
     maxy = segment.p2.screen.y;
   }
@@ -866,7 +631,6 @@ function render() {
 
   for (n = 0; n < drawDistance; n++) {
     segment = segments[(baseSegment.index + n) % segments.length];
-
     for (var i = 0; i < segment.sprites.length; i++) {
       var sprite = segment.sprites[i];
       var spriteScale = segment.p1.screen.scale;
@@ -896,17 +660,10 @@ function render() {
     ctx.font = "60px Arial";
     ctx.textAlign = "center";
     let resultDisplay = ' ';
-
     if (typeof resultToDisplay !== 'undefined') {
-      if (resultToDisplay === 'Success') {
-        resultDisplay = successful_display;
-        ctx.fillStyle = "green";
-      } else if(resultToDisplay === 'Failure') {
-        resultDisplay = failed_display;
-        ctx.fillStyle = "red";
-      }
+      if (resultToDisplay === 'Success') { resultDisplay = successful_display; ctx.fillStyle = "green"; } 
+      else if(resultToDisplay === 'Failure') { resultDisplay = failed_display; ctx.fillStyle = "red"; }
     }
-
     ctx.fillText(resultDisplay, canvas.width/2, canvas.height/4+30);
     ctx.font = "30px Arial";
     ctx.fillStyle = "red";
@@ -914,16 +671,10 @@ function render() {
   }
 }
 
-function addSprite(segments, n, sprite, offset) {
-  segments[n].sprites.push({
-    source: sprite,
-    offset: offset
-  });
-}
+function addSprite(segments, n, sprite, offset) { segments[n].sprites.push({ source: sprite, offset: offset }); }
 
 function resetRoad() {
   segments = [];
-
   for (var n = 0; n < 250; n++) {
     segments.push({
       index: n,
@@ -933,62 +684,22 @@ function resetRoad() {
       sprites: []
     });
   }
-
   addSprite(segments, redLightDistance + 4, window.SPRITES.GREEN, -1);
   segments[redLightDistance].color = window.COLORS.RED;
   segments[redLightDistance - 20].color = window.COLORS.GREEN;
   trackLength = segments.length * segmentLength;
 }
 
-function findSegment(z) {
-  return segments[Math.floor(z / segmentLength) % segments.length];
-}
+function findSegment(z) { return segments[Math.floor(z / segmentLength) % segments.length]; }
 
 window.Game.run({
-  canvas: canvas,
-  render: render,
-  update: update,
-  stats: stats,
-  step: step,
+  canvas: canvas, render: render, update: update, stats: stats, step: step,
   images: ["background", "sprites"],
-  keys: [{
-    keys: [window.KEY.A, window.KEY.B],
-    mode: 'down',
-    action: function action() { keyLeft = true; }
-  }, {
-    keys: [window.KEY.RIGHT, window.KEY.D],
-    mode: 'down',
-    action: function action() { keyRight = true; }
-  }, {
-    keys: [window.KEY.UP, window.KEY.W],
-    mode: 'down',
-    action: function action() { keyFaster = true; }
-  }, {
-    keys: [window.KEY.DOWN, window.KEY.S],
-    mode: 'down',
-    action: function action() { keySlower = true; }
-  }, {
-    keys: [window.KEY.A, window.KEY.B],
-    mode: 'up',
-    action: function action() { keyLeft = false; }
-  }, {
-    keys: [window.KEY.RIGHT, window.KEY.D],
-    mode: 'up',
-    action: function action() { keyRight = false; }
-  }, {
-    keys: [window.KEY.UP, window.KEY.W],
-    mode: 'up',
-    action: function action() { keyFaster = false; }
-  }, {
-    keys: [window.KEY.DOWN, window.KEY.S],
-    mode: 'up',
-    action: function action() { keySlower = false; }
-  }],
-  ready: function ready(images) {
-    background = images[0];
-    sprites = images[1];
-    reset();
-  }
+  keys: [
+    { keys: [window.KEY.A, window.KEY.B], mode: 'down', action: function action() { keyLeft = true; } },
+    { keys: [window.KEY.A, window.KEY.B], mode: 'up', action: function action() { keyLeft = false; } }
+  ],
+  ready: function ready(images) { background = images[0]; sprites = images[1]; reset(); }
 });
 
 function reset(options) {
@@ -1007,102 +718,19 @@ function reset(options) {
   playerZ = cameraHeight * cameraDepth;
   resolution = height / 480;
   speed = (1 - Math.random() * Math.random()) * maxSpeed / 2 + maxSpeed / 2;
-  brakeState = false;
-  resetFlag = false;
-  missingRedFlag = false;
-  checkedFlag = false;
-  cleanFlag = false;
-  redLightStatus = 2;
-
-  if (options.resetPosition) {
-    position = 0;
-    zeroSpeedFlag = false;
-  }
-
+  brakeState = false; resetFlag = false; missingRedFlag = false; checkedFlag = false; cleanFlag = false; redLightStatus = 2;
+  if (options.resetPosition) { position = 0; zeroSpeedFlag = false; }
   refreshTweakUI();
   if (segments.length == 0 || options.segmentLength || options.rumbleLength) resetRoad();
 }
 
 function resetAll() {
-  correctStop = 0;
-  incorrectStop = 0;
+  correctStop = 0; incorrectStop = 0;
   document.getElementById("successful").innerText = correctStop.toString();
   document.getElementById("failed").innerText = incorrectStop.toString();
-  changeToGreenLights();
-  clearTimeout(amberTrigger);
-  clearTimeout(redTrigger);
-  reset({
-    resetPosition: true
-  });
+  changeToGreenLights(); clearTimeout(amberTrigger); clearTimeout(redTrigger);
+  reset({ resetPosition: true });
 }
-
-window.Dom.on('resolution', 'change', function (ev) {
-  var w, h, ratio;
-
-  switch (ev.target.options[ev.target.selectedIndex].value) {
-    case 'fine':
-      w = 1280;
-      h = 960;
-      break;
-
-    case 'high':
-      w = 1024;
-      h = 768;
-      break;
-
-    case 'medium':
-      w = 640;
-      h = 480;
-      break;
-
-    case 'low':
-      w = 480;
-      h = 360;
-      break;
-  }
-
-  reset({
-    width: w,
-    height: h
-  });
-  window.Dom.blur(ev);
-});
-window.Dom.on('lanes', 'change', function (ev) {
-  window.Dom.blur(ev);
-  reset({
-    lanes: ev.target.options[ev.target.selectedIndex].value
-  });
-});
-window.Dom.on('roadWidth', 'change', function (ev) {
-  window.Dom.blur(ev);
-  reset({
-    roadWidth: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max')))
-  });
-});
-window.Dom.on('cameraHeight', 'change', function (ev) {
-  window.Dom.blur(ev);
-  reset({
-    cameraHeight: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max')))
-  });
-});
-window.Dom.on('drawDistance', 'change', function (ev) {
-  window.Dom.blur(ev);
-  reset({
-    drawDistance: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max')))
-  });
-});
-window.Dom.on('fieldOfView', 'change', function (ev) {
-  window.Dom.blur(ev);
-  reset({
-    fieldOfView: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max')))
-  });
-});
-window.Dom.on('fogDensity', 'change', function (ev) {
-  window.Dom.blur(ev);
-  reset({
-    fogDensity: window.Util.limit(window.Util.toInt(ev.target.value), window.Util.toInt(ev.target.getAttribute('min')), window.Util.toInt(ev.target.getAttribute('max')))
-  });
-});
 
 function refreshTweakUI() {
   window.Dom.get('lanes').selectedIndex = lanes - 1;
