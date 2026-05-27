@@ -1,0 +1,1041 @@
+<!DOCTYPE html> 
+
+<html>
+<head>
+  <title>Rule-based Reasoning</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link href="common.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+  <script src="html2canvas.min.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #9e08f0;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #440a67;
+  cursor: pointer;
+}
+
+.collapsible {
+  background-color: #440a67;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 20px;
+}
+
+.active, .collapsible:hover {
+  background-color: #7a16b1;
+}
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #c1beed;
+}
+</style>
+
+  <script src="./vanilla-i18n.js"></script>
+  <script>
+    const languages = [
+      "English",
+      "中文"
+    ];
+    new vanilla_i18n (
+      languages,
+      opts = {
+        path: "vanilla-i18n",
+        debug: false,
+        i18n_attr_name: "vanilla-i18n",
+        toggler_id: "vanilla-i18n-toggler",
+        default_language: languages[0],
+      }
+    ).run();
+  </script>
+</head> 
+
+<body> 
+<div id="wrapper">
+  <table id="controls" style="display: none;">
+    <tr>
+      <td colspan="2">
+        <a href='v1.straight.html'>straight</a> |
+      </td>
+    </tr>
+    <tr><td id="fps" colspan="2" align="right"></td></tr>
+    <tr>
+      <th><label for="resolution">Resolution :</label></th>
+      <td>
+        <select id="resolution" style="width:100%">
+          <option value='fine'>Fine (1280x960)</option>
+          <option selected value='high'>High (1024x768)</option>
+          <option value='medium'>Medium (640x480)</option>
+          <option value='low'>Low (480x360)</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th><label for="lanes">Lanes :</label></th>
+      <td>
+        <select id="lanes">
+          <option selected>1</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th><label for="roadWidth">Road Width (<span id="currentRoadWidth"></span>) :</label></th>
+      <td><input id="roadWidth" type='range' min='500' max='3000' title="integer (500-3000)"></td>
+    </tr>
+    <tr>
+      <th><label for="cameraHeight">CameraHeight (<span id="currentCameraHeight"></span>) :</label></th>
+      <td><input id="cameraHeight" type='range' min='500' max='5000' title="integer (500-5000)"></td>
+    </tr>
+    <tr>
+      <th><label for="drawDistance">Draw Distance (<span id="currentDrawDistance"></span>) :</label></th>
+      <td><input id="drawDistance" type='range' min='100' max='500' title="integer (100-500)"></td>
+    </tr>
+    <tr>
+      <th><label for="fieldOfView">Field of View (<span id="currentFieldOfView"></span>) :</label></th>
+      <td><input id="fieldOfView" type='range' min='80' max='140' title="integer (80-140)"></td>
+    </tr>
+    <tr>
+      <th><label for="fogDensity">Fog Density (<span id="currentFogDensity"></span>) :</label></th>
+      <td><input id="fogDensity" type='range' min='0' max='50' title="integer (0-50)"></td>
+    </tr>
+  </table>
+
+  
+  <h2 style="font-family: Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #663366;"><i18n vanilla-i18n="tasktwo_title">規則推理的剎車</i18n>
+  </h2>
+  <div><i18n vanilla-i18n="end_time">本實驗將於 </i18n><span id="timer">0h 59m 59s</span>後完結 </div>
+  <br>
+
+  <button type="button" class="collapsible"><i18n id="vanilla-i18n-detect" vanilla-i18n="taskthree_task_description">活動描述</i18n>
+  </button>
+    <div class='content'>
+      <table cellspacing="5" cellpadding="5">
+      <tr><td valign=top colspan=2><b><i18n vanilla-i18n="taskthree_task_three">活動二：規則推理的剎車</i18n></b></td></tr>                  
+      <tr><td valign=top>1.</td><td valign=top><i18n vanilla-i18n="taskthree_input_your_choices">使用默認設定，按「開始遊戲」，觀察汽車的剎車表現 </i18n></td></tr>
+      <tr><td valign=top>2.</td><td valign=top><i18n vanilla-i18n="taskthree_your_rules_reflect">按「轉換天氣」，觀察汽車剎車表現的變化</i18n></td></tr>      
+      <tr><td valign=top>3.</td><td valign=top><i18n vanilla-i18n="taskthree_input_your_rule">嘗試調整規則集中的剎車力道，以改善汽車的表現</i18n></td></tr>    
+	  <tr><td valign=top>4.</td><td valign=top><i18n vanilla-i18n="taskthree_input_your_rule">(可選) 按「自訂設定」可進一步調整速度和距離的定義，以設定表現更好的規則集</i18n></td></tr>   
+      </table>
+    <p></p>
+
+<!-- translation_helper -->
+  <div hidden>
+    <i18n vanilla-i18n="canvas_translation_helper_Speed" id="canvas_translation_helper_Speed">時速:      </i18n>
+    <i18n vanilla-i18n="canvas_translation_helper_Distance" id="canvas_translation_helper_Distance">距離:      </i18n>
+    <i18n vanilla-i18n="canvas_translation_helper_Successful" id="canvas_translation_helper_Successful">遊戲成功!</i18n>
+    <i18n vanilla-i18n="canvas_translation_helper_Failed" id="canvas_translation_helper_Failed">遊戲失敗!</i18n>
+    <i18n vanilla-i18n="canvas_translation_helper_Start" id="canvas_translation_helper_Start">按「開始」進入下一輪遊戲</i18n>
+  </div>
+
+    </div>
+    <script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+  <div id='instructions'>
+    <h3><i18n vanilla-i18n="taskthree_game_statistics">遊戲數據</i18n>
+    </h3>
+    <table>
+      <tr style="display:none;">
+        <td>
+          <i18n vanilla-i18n="taskthree_speed">Speed</i18n>
+        </td>
+        <td>
+          <span id="speedDisplay">0</span><i18n vanilla-i18n="taskthree_km_per_h">km/h</i18n>&nbsp;
+        </td>
+      </tr>
+      <tr style="display:none;">
+        <td>
+          <i18n vanilla-i18n="taskthree_distance">Distance:</i18n>
+        </td>
+        <td>
+          <span id="distanceDisplay">0</span><i18n vanilla-i18n="taskthree_meter">m</i18n>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i18n vanilla-i18n="taskthree_status">狀態:</i18n>
+        </td>
+        <td>
+          <span id="stage"><i18n vanilla-i18n="taskthree_no_brake">不剎車</i18n>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i18n vanilla-i18n="taskthree_status">交通燈信號:</i18n> 
+        </td>
+        <td>
+          <span id="light"><i18n vanilla-i18n="taskthree_no_brake">綠色</i18n>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i18n vanilla-i18n="taskthree_successful_attempts">成功次數:</i18n>
+        </td>
+        <td>
+          <span id="successful" style="color:#226d35">0</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i18n vanilla-i18n="taskthree_failed_attempts">失敗次數:</i18n> 
+        </td>
+        <td>
+          <span id="failed" style="color:#de364c">0</span>
+        </td>
+      </tr> 
+    </table>
+    <button id="startGame" class="pure-button" onclick="pause=false"  style="margin-top: 3px;color:white; background: rgb(202, 60, 60);"><i18n vanilla-i18n="start_game">開始</i18n>
+    </button>
+    <button id="resetCount" class="pure-button" onclick="resetAll()"  style="margin-top: 3px;color:white; background: rgb(202, 60, 60);"><i18n vanilla-i18n="reset_game">重設</i18n>
+    </button>
+    <br/><p><button id="weatherChange" class="pure-button" onclick="changeWeather()"> <i18n vanilla-i18n="taskthree_change_weather">轉換天氣!</i18n>
+    </button>
+    
+
+    <br/>
+    <hr/>
+
+    <b><i18n vanilla-i18n="taskthree_hints">提示</i18n>
+    </b>
+    <p><i><i18n vanilla-i18n="taskthree_the_rules_only">當交通燈信號為黃色或紅色時，根據規則執行的剎車指令方格將亮起。</i18n> <i18n vanilla-i18n="taskthree_the_red_rule">&nbsp;</i18n>
+    </i></p>
+  </div>
+
+  <div id="racer">
+    <canvas id="canvas">
+      Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
+    </canvas>
+    Loading...
+  </div>
+
+ <table id="rules" class="pure-table">
+    <thead>
+      <tr>
+        <th rowspan="2" style="text-align:center">
+          <button id="customized_button" style="height:60px;background-color:white" 
+          onclick="
+          if (this.style.backgroundColor==='gray') {
+            this.style.backgroundColor = 'white';
+          }else{
+            this.style.backgroundColor = 'gray';
+          }"><i18n vanilla-i18n="customized_button">自訂設定</i18n>
+          </button>
+          <button id="default_button" style="height:60px" 
+          onclick="
+          document.getElementById('shortDistance').value = 10;
+          document.getElementById('lowSpeed').value = 20;
+          shortnum1.value = 10;
+          shortnum2.value = 10;
+          lspeed.value = 20;
+          document.getElementById('lowSpeedDisplay').innerText = 20;
+		  document.getElementById('stage0_0').selectedIndex = 1;
+		  document.getElementById('stage0_1').selectedIndex = 0;
+		  document.getElementById('stage1_0').selectedIndex = 2;
+		  document.getElementById('stage1_1').selectedIndex = 1;	   
+          "><i18n vanilla-i18n="default_button">默認設定</i18n>
+          </button>
+        </th>
+        <th>
+          <i18n vanilla-i18n="taskthree_short_distance">短距離</i18n> 
+          < <output id="shortnum1">10</output><i18n vanilla-i18n="taskthree_meter">m</i18n>
+        </th>
+        <th>
+          <i18n vanilla-i18n="taskthree_long_distance">長距離</i18n> 
+          ≥  <output id="shortnum2">10</output><i18n vanilla-i18n="taskthree_meter">m</i18n>
+        </th>
+      </tr>
+        <th colspan="2"><div class="slidecontainer">
+            <input id="shortDistance" style="display:none;" class="slider" type='range' min='0' max='30' title="integer (0-100)" value="10"  oninput="shortnum1.value = this.value; shortnum2.value = this.value" output.innerHTML = this.value>
+          </div></th>
+      <tr>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th> <i18n vanilla-i18n="taskthree_low_speed">低速</i18n> 
+          ≤ <span id="lowSpeedDisplay">20</span><i18n vanilla-i18n="taskthree_km_per_h">km/h</i18n><br/>
+          <div class="slidecontainer">
+            <input id="lowSpeed" style="display:none;" class="slider" type='range' min='0' max='80' title="integer (5-80)" value="20" onchange="updateSliders(this)" oninput="lspeed.value = this.value" output.innerHTML = this.value>
+          </div>
+        </th>
+        <td>
+          <i18n vanilla-i18n="taskthree_stage0_0.options">
+          <select id="stage0_0">
+            <option>不剎車</option>
+            <option selected="selected">半剎車</option>
+            <option>剎車</option>
+          </select>
+          </i18n>
+        </td>
+        <td>
+          <i18n vanilla-i18n="taskthree_stage0_1.options">
+          <select id="stage0_1">
+            <option selected="selected">不剎車</option>
+            <option>半剎車</option>
+            <option>剎車</option>
+          </select>
+          </i18n>
+        </td>
+      </tr>
+      <tr>
+        <th> <i18n vanilla-i18n="taskthree_mid_speed">高速</i18n> 
+          &gt; <output id="lspeed">20</output> <i18n vanilla-i18n="taskthree_km_per_h">km/h</i18n><br/>
+        <td>
+          <i18n vanilla-i18n="taskthree_stage1_0.options">
+          <select id="stage1_0">
+            <option>不剎車</option>
+            <option>半剎車</option>
+            <option selected="selected">剎車</option>
+          </select>
+        </i18n>
+        </td>
+        <td>
+          <i18n vanilla-i18n="taskthree_stage1_1.options">
+          <select id="stage1_1">
+            <option>不剎車</option>
+            <option selected="selected">半剎車</option>
+            <option>剎車</option>
+          </select>
+          </i18n>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button id="exitGame" class="pure-button" onclick="aia_send('exitGame');window.history.back();"  style="margin-top: 3px;color:white; background: rgb(0, 187, 211);"><i18n vanilla-i18n="taskthree_exit_game">離開遊戲</i18n>
+  </button></p>
+
+  </div>
+
+  <script src="https://kata-ai.keep.edu.hk/kevent/kevent.js"></script>
+  <script src="./kevent.js"></script>  
+  <script>
+    var aia_cid = 'Chapter7::Rule-based Stopping Own Rules';
+    start_timer();
+  </script>
+
+  <script src="stats.js"></script>
+  <script src="common.js"></script>
+  <script>
+
+    var fps           = 60;                      // how many 'update' frames per second
+    var step          = 1/fps;                   // how long is each frame (in seconds)
+    var width         = 1024;                    // logical canvas width
+    var height        = 768;                     // logical canvas height
+    var segments      = [];                      // array of road segments
+    var stats         = Game.stats('fps');       // mr.doobs FPS counter
+    var canvas        = Dom.get('canvas');       // our canvas...
+    var ctx           = canvas.getContext('2d'); // ...and its drawing context
+    var background    = null;                    // our background image (loaded below)
+    var sprites       = null;                    // our spritesheet (loaded below)
+    var resolution    = null;                    // scaling factor to provide resolution independence (computed)
+    var roadWidth     = 2000;                    // actually half the roads width, easier math if the road spans from -roadWidth to +roadWidth
+    var segmentLength = 150;                     // length of a single segment
+    var rumbleLength  = 3;                       // number of segments per red/white rumble strip
+    var trackLength   = null;                    // z length of entire track (computed)
+    var lanes         = 3;                       // number of lanes
+    var fieldOfView   = 100;                     // angle (degrees) for field of view
+    var cameraHeight  = 1000;                    // z height of camera
+    var cameraDepth   = null;                    // z distance camera is from screen (computed)
+    var drawDistance  = 400;                     // number of segments to draw
+    var playerX       = 0;                       // player x offset from center of road (-1 to 1 to stay independent of roadWidth)
+    var playerZ       = null;                    // player relative z distance from camera (computed)
+    var fogDensity    = 5;                       // exponential fog density
+    var position      = 0;                       // current camera Z position (add playerZ to get player's absolute Z position)
+    var maxSpeed      = segmentLength/step;      // top speed (ensure we can't move more than 1 segment in a single frame to make collision detection easier)
+    var speed         = Math.random() * maxSpeed /3 * 2 + maxSpeed / 3;                       // current speed, i give a inverse of square for better distribution. You can try your own version!
+    var speedOrg      = speed;
+    var accel         =  maxSpeed/3;             // acceleration rate - tuned until it 'felt' right
+    var breaking      = -maxSpeed;               // deceleration rate when braking
+    var decel         = -maxSpeed/5;             // 'natural' deceleration rate when neither accelerating, nor braking
+    var offRoadDecel  = -maxSpeed/2;             // off road deceleration is somewhere in between
+    var offRoadLimit  =  maxSpeed/4;             // limit when off road deceleration no longer applies (e.g. you can always go at least this speed even when off road)
+
+    var keyLeft       = false;
+    var keyRight      = false;
+    var keyFaster     = false;
+    var keySlower     = false;
+
+    var looped = 0;
+    var prevSegment = 0;
+
+    var redLightStatus = 2;                     // Red light status 0: red, 1: amber, 2: green
+    var redLightDistance = 250 + parseInt(Math.random() * 50)
+    var maxWaitingAmberTime = 1.0;              // time for trigger amber after some sort of detection
+    var minAmberTime = 2.5;                     // Time for a amber change to red
+    var maxAmberTime = 2.5;
+    //var pointDDistance = 45;                 // Point D -> All distance metrics are based on segments. 
+    var triggerRedDistance = 190;              // Point to trigger a red light (with redChance) 
+    var redChance = 0.85;                        // Chance for appearing a red light
+    var missingRedFlag = false;
+
+    var correctStop = 0;
+    var incorrectStop = 0;
+    var amberTrigger;
+    var greenTrigger;
+    var redTrigger;
+    var brakeState = false;
+    var resetFlag = false;
+    var cleanFlag = false;              // cleanup flag for crossed the line operations
+    var checkedFlag = false;            // check flag for triggering red lights
+    var zeroSpeedFlag = false;
+
+    var prevStage = -1;
+
+    var longDistance = 30;
+
+    var virtualDistance = 0
+    var virtualSpeed = 0
+
+    //=========================================================================
+    // UPDATE THE GAME WORLD
+    //=========================================================================
+
+
+    /* TODO
+      This is the forked version for ch.7 sim prototype. 
+      I am not sure if this will be finally moved to a more mature Unity version, but for now, we stick to the JS code and keep our head down for the first demonstration.
+
+
+      Current todos:
+      1. Randomly assign the distance of the traffic light
+      2. Setting the traffic light status based on time-basis -> add a red line on the screen
+      3. Add UIs for the stop button / counting the metrics
+      4. Cut off the speed -> make it static & random
+
+      Future work:
+      1. revise and update the physics model (if the timestep allows us to do better, or decouple the physics from the render)
+      2. Add the stop assets and give the control logic back to html elements (we will hide upon production)
+      3. test with the graphics and ask for some more advice. 
+
+    */
+
+    const toggleButton = document.getElementById("customized_button");
+    const speedSlider = document.getElementById("lowSpeed");
+    const distanceSlider = document.getElementById("shortDistance");
+    toggleButton.addEventListener('click', () => {
+      if (speedSlider.style.display === 'block'){
+        speedSlider.style.display = 'none'
+        distanceSlider.style.display = 'none'
+      } else{
+        speedSlider.style.display = 'block'
+        distanceSlider.style.display = 'block'
+      }
+    })
+
+    function intValue(id){
+      return parseInt(document.getElementById(id).value)
+    }
+
+    function updateSliders(obj){
+      sourceId = obj.id
+      targetId = sourceId + "Display"
+      document.getElementById(targetId).innerText = document.getElementById(sourceId).value
+      aia_send(obj.id);
+    }
+
+    function changeWeather(){
+      if(window.weather === 'normal'){
+        window.weather = 'rainy'
+
+        // change the graphic things
+        background = new Image()
+        background.setAttribute('src', 'images/background.dark.png')
+        COLORS.FOG = "#2A323A"
+        for (var j=0; j<segments.length; j++){
+          //console.log(segments[j]["color"].road)
+          if(segments[j]["color"].road === COLORS["LIGHT"].road){
+            segments[j]["color"] = COLORS["DKRLGT"]
+          }
+          if(segments[j]["color"].road === COLORS["DARK"].road){
+            segments[j]["color"] = COLORS["DKR"]
+          }
+        }
+        //console.log(segments[redLightDistance].color, segments[redLightDistance-20].color)
+        //console.log(COLORS.DKRREDD, COLORS.DKRGREEN)
+        segments[redLightDistance].color = COLORS.DKRREDD
+        segments[redLightDistance-20].color = COLORS.DKRGRN
+
+      } else if (window.weather === 'rainy'){
+        window.weather = 'normal'
+
+        // change the graphic things
+        background = new Image()
+        background.setAttribute('src', 'images/background.png')
+        COLORS.FOG = "#005108"
+        for (var j=0; j<segments.length; j++){
+          //console.log(segments[j]["color"].road)
+          if(segments[j]["color"].road === COLORS["DKRLGT"].road){
+            segments[j]["color"] = COLORS["LIGHT"]
+          }
+          if(segments[j]["color"].road === COLORS["DKR"].road){
+            segments[j]["color"] = COLORS["DARK"]
+          }
+        }
+        segments[redLightDistance].color = COLORS.RED
+        segments[redLightDistance-20].color = COLORS.GREEN
+      }
+      aia_send("weather");
+    }
+
+    function getBrakeLevel(speed, distance, redLightStatus){
+      var shortDistance = intValue("shortDistance")
+
+      var lowSpeed = intValue("lowSpeed")
+
+      var distanceStage = 0
+      var speedStage = 0
+
+      //console.log(speed)
+      document.getElementById("speedDisplay").innerText = Math.round(speed);
+      document.getElementById("distanceDisplay").innerText = distance;
+
+      if (distance === 0){
+        return 0
+      }
+
+      if (distance < shortDistance){
+        distanceStage = 0
+      } else if (distance < longDistance){
+        distanceStage = 1
+      } else {
+        distanceStage = 2
+      }
+
+
+      if (speed < lowSpeed){
+        speedStage = 0
+      } else{
+        speedStage = 1
+      }
+
+      //console.log(speedStage, distanceStage, document.getElementById('stage'+speedStage+'_'+distanceStage).value)
+
+      currentStage = speedStage * 4 + distanceStage
+      if (distanceStage === -1){
+        currentStage = -1
+      }
+      if (redLightStatus !== 2 && speedStage < 2 && distanceStage < 2){
+        document.querySelector('#rules tbody').children[speedStage].children[distanceStage + 1].style.backgroundColor = "#FFDDCC"
+      }
+      if (currentStage !== prevStage){
+        if (prevStage !== -1){
+          for (let item of document.querySelectorAll('#rules td')){
+            item.style.backgroundColor = "#FFF"
+          }
+        }
+      }
+      prevStage = currentStage
+
+      var stageOption = '不剎車'
+      // green light, no operations
+      if (redLightStatus === 2){
+        stageOption = '不剎車'
+      } else if (distanceStage < 2){
+        // out of distance range, no opeartions
+        stageOption = document.getElementById('stage'+speedStage+'_'+distanceStage).value
+      }
+
+      if (document.getElementById("vanilla-i18n-detect").innerText === '活動描述')
+      {
+        if (stageOption === '不剎車')
+          document.getElementById("stage").innerText = '不剎車'; //'不剎車'
+        else
+          if (stageOption === '半剎車')
+            document.getElementById("stage").innerText = '半剎車'; //'輕剎車'
+          else
+            document.getElementById("stage").innerText = '剎車'; //'重剎車'
+      }  else 
+          document.getElementById("stage").innerText = stageOption;
+
+      if (stageOption === '不剎車'){
+        return 0
+      }
+      else if (stageOption === '半剎車'){
+        return 1
+      }
+      else if (stageOption === '剎車'){
+        return 2
+      }
+    }
+
+    function changeToGreenLights(){
+      // reset lights
+      redLightStatus = 2
+      segments[redLightDistance+4].sprites[0].source = SPRITES.GREEN
+      looped = 0
+      document.getElementById('light').innerText = '綠色'
+    }
+
+    function changeToAmberLights(){
+      // reset lights
+      redLightStatus = 1
+      segments[redLightDistance+4].sprites[0].source = SPRITES.AMBER
+      redTrigger = setTimeout(changeToRedLights, 1000 * (minAmberTime + Math.random() * (maxAmberTime - minAmberTime)))
+      document.getElementById('light').innerText = '黃色'
+    }
+
+    function changeToRedLights(){
+      // change light status and also sprites
+      console.log("red alert!")
+      redLightStatus = 0
+      segments[redLightDistance+4].sprites[0].source = SPRITES.RED
+      document.getElementById('light').innerText = '紅色'
+    }
+
+    function brake(){
+      brakeState = true;
+    }
+
+    function update(dt) {
+      position = Util.increase(position, dt * speed, trackLength);
+      var currentSegment = findSegment(position).index
+
+      //if (currentSegment < prevSegment && missingRedFlag)
+      //  looped += 1
+
+      if (currentSegment === 1 && !checkedFlag){
+        console.log("Check Now!")
+        cleanFlag = false
+        checkedFlag = true
+        if (Math.random() < redChance){
+          // apply a light change here
+          amberTrigger = setTimeout(changeToAmberLights, Math.random() * maxWaitingAmberTime * 1000)
+        }
+      }
+
+      if (currentSegment + 6 > redLightDistance && prevSegment + 6 <= redLightDistance)
+      {
+        if(redLightStatus === 0){
+          incorrectStop += 1;
+          aia_send("incorrectStop");
+          resultToDisplay = "Failure";
+        }else{
+          correctStop += 1;
+          aia_send("correctStop");
+          resultToDisplay = 'Success';
+        }
+        document.getElementById("successful").innerText = correctStop.toString()
+        document.getElementById("failed").innerText = incorrectStop.toString()
+
+        console.log("AfterTrigger.", correctStop, incorrectStop)
+        clearTimeout(amberTrigger)
+        clearTimeout(redTrigger)
+        changeToGreenLights()
+        checkedFlag = false
+        speed = Math.random() * maxSpeed /4 * 3 + maxSpeed / 4;    // reinitialize with a new speed
+        pause = true;
+      }
+
+      if (speed === 0 && !zeroSpeedFlag){
+        // speed = 0 -> check if the stop is beyond the line
+        console.log(currentSegment, redLightDistance)
+        if (currentSegment + 6 <= redLightDistance && currentSegment + 6 > redLightDistance - 20){
+          if(redLightStatus !== 2){
+            correctStop += 1;
+            aia_send("correctStop");
+            resultToDisplay = 'Success';
+          }
+        }
+        else{
+          incorrectStop += 1;
+          resultToDisplay = "Failure";
+          aia_send("incorrectStop");
+          
+        }
+        for (let item of document.querySelectorAll('#rules td')){
+          item.style.backgroundColor = "#FFF"
+        }
+        zeroSpeedFlag = true
+        checkedFlag = false
+        setTimeout(()=>{
+          changeToGreenLights();
+          reset({resetPosition: true})
+          speed = Math.random() * maxSpeed /4 * 3 + maxSpeed / 4;    // reinitialize with a new speed
+          speedOrg = speed;
+        }, 2000)
+        console.log(correctStop, incorrectStop)
+        clearTimeout(amberTrigger)
+        clearTimeout(redTrigger)
+        document.getElementById("successful").innerText = correctStop.toString()
+        document.getElementById("failed").innerText = incorrectStop.toString()
+        pause = true
+      }
+
+      var dx = dt * 2 * (speed/maxSpeed); // at top speed, should be able to cross from left to right (-1 to 1) in 1 second
+      virtualSpeed = speed / fps / 2
+      virtualDistance = 0
+      if (redLightDistance - (currentSegment % segments.length + 6) > 0)
+      {
+        virtualDistance = redLightDistance - (currentSegment % segments.length + 6);
+      }else{
+        virtualDistance = redLightDistance + (segments.length - (currentSegment % segments.length) - 6)
+      }
+      var brakeLevel = getBrakeLevel(virtualSpeed, virtualDistance, redLightStatus)
+
+      //console.log(brakeLevel)
+
+      if (brakeLevel === 0){
+        brakeState = false
+        breaking = 0
+      }
+      else if (brakeLevel === 1){
+        brakeState = true
+        if (window.weather === 'normal'){
+          breaking = -maxSpeed/3
+        } else {
+          breaking = -maxSpeed/10
+        }
+        
+      }
+      else if (brakeLevel === 2){
+        brakeState = true
+        if (window.weather === 'normal') {
+          breaking = -maxSpeed*2/3
+        } else {
+          breaking = -maxSpeed/4
+        }
+      }
+
+      //if (keyLeft)
+      //  playerX = playerX - dx;
+      //else if (keyRight)
+      //  playerX = playerX + dx;
+
+      //if (keyFaster)
+      //speed = Util.accelerate(speed, accel, dt);
+
+      if (brakeState){
+        speed = Util.accelerate(speed, breaking, dt);
+      }
+
+      //if (keySlower){
+      //  speed = Util.accelerate(speed, breaking, dt);
+      //} else {
+        /*speed = Util.accelerate(speed, decel, dt);*/
+      //}
+
+      if (((playerX < -1) || (playerX > 1)) && (speed > offRoadLimit))
+        speed = Util.accelerate(speed, offRoadDecel, dt);
+      
+      playerX = Util.limit(playerX, -2, 2);     // dont ever let player go too far out of bounds
+      speed   = Util.limit(speed, 0, maxSpeed); // or exceed maxSpeed
+
+      prevSegment = currentSegment
+    }
+
+    //=========================================================================
+    // RENDER THE GAME WORLD
+    //=========================================================================
+
+    function render() {
+
+      var baseSegment = findSegment(position);
+      var maxy        = height;
+
+      ctx.clearRect(0, 0, width, height);
+
+      Render.background(ctx, background, width, height, BACKGROUND.SKY);
+      Render.background(ctx, background, width, height, BACKGROUND.HILLS);
+      Render.background(ctx, background, width, height, BACKGROUND.TREES);
+
+      var n, segment;
+
+      for(n = 0 ; n < drawDistance ; n++) {
+
+        segment        = segments[(baseSegment.index + n) % segments.length];
+        segment.looped = segment.index < baseSegment.index;
+        segment.fog    = Util.exponentialFog(n/drawDistance, fogDensity);
+
+        Util.project(segment.p1, (playerX * roadWidth), cameraHeight, position - (segment.looped ? trackLength : 0), cameraDepth, width, height, roadWidth);
+        Util.project(segment.p2, (playerX * roadWidth), cameraHeight, position - (segment.looped ? trackLength : 0), cameraDepth, width, height, roadWidth);
+
+        if ((segment.p1.camera.z <= cameraDepth) || // behind us
+            (segment.p2.screen.y >= maxy))          // clip by (already rendered) segment
+          continue;
+
+        Render.segment(ctx, width, lanes,
+                       segment.p1.screen.x,
+                       segment.p1.screen.y,
+                       segment.p1.screen.w,
+                       segment.p2.screen.x,
+                       segment.p2.screen.y,
+                       segment.p2.screen.w,
+                       segment.fog,
+                       segment.color);
+
+        maxy = segment.p2.screen.y;
+      }
+
+      Render.player(ctx, width, height, resolution, roadWidth, sprites, speed/maxSpeed,
+                    cameraDepth/playerZ,
+                    width/2,
+                    height,
+                    speed * (keyLeft ? -1 : keyRight ? 1 : 0),
+                    0);
+
+      for(n = 0 ; n < drawDistance ; n++) {
+        segment        = segments[(baseSegment.index + n) % segments.length];
+
+        for(i = 0 ; i < segment.sprites.length ; i++) {
+          sprite      = segment.sprites[i];
+          spriteScale = segment.p1.screen.scale;
+          spriteX     = segment.p1.screen.x + (spriteScale * sprite.offset * roadWidth * width/2);
+          spriteY     = segment.p1.screen.y;
+          Render.sprite(ctx, width, height, resolution, roadWidth, sprites, sprite.source, spriteScale, spriteX, spriteY, (sprite.offset < 0 ? -1 : 0), -1, segment.clip);
+        }
+      }
+
+      speed_display = document.getElementById("canvas_translation_helper_Speed").innerText
+      distance_display = document.getElementById("canvas_translation_helper_Distance").innerText
+      successful_display = document.getElementById("canvas_translation_helper_Successful").innerText
+      failed_display = document.getElementById("canvas_translation_helper_Failed").innerText
+      start_display = document.getElementById("canvas_translation_helper_Start").innerText
+
+      ctx.fillStyle = "white"
+      ctx.fillRect(canvas.width/20, canvas.height/5*4, 275, 100)
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "red"
+      ctx.textAlign = "left"
+      ctx.fillText(speed_display + Math.round(virtualSpeed) + " km/h", canvas.width/20+20, canvas.height/5*4+40)
+      ctx.fillText(distance_display + Math.round(virtualDistance) + " m", canvas.width/20+20, canvas.height/5*4+80)
+      if (pause === true) {
+        ctx.fillStyle = "white"
+        ctx.fillRect(canvas.width/5, canvas.height/5, canvas.width/5*3,canvas.height/5)
+        ctx.font = "60px Arial";
+        ctx.textAlign = "center";
+        resultDisplay = ' ';
+        if (resultToDisplay === 'Success'){
+          resultDisplay = successful_display
+          ctx.fillStyle = "green"
+        }else if(resultToDisplay === 'Failure'){
+          resultDisplay = failed_display
+          ctx.fillStyle = "red"
+        }
+        ctx.fillText(resultDisplay, canvas.width/2, canvas.height/4+30)
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "red"
+        ctx.fillText(start_display, canvas.width/2, canvas.height/3+20)
+      }
+    }
+
+    //=========================================================================
+    // BUILD ROAD GEOMETRY
+    //=========================================================================
+
+    function addSprite(segments, n, sprite, offset) {
+      segments[n].sprites.push({ source: sprite, offset: offset });
+    }
+
+    function resetRoad() {
+      segments = [];
+      for(var n = 0 ; n < 400 ; n++) {
+        segments.push({
+           index: n,
+           p1: { world: { z:  n   *segmentLength }, camera: {}, screen: {} },
+           p2: { world: { z: (n+1)*segmentLength }, camera: {}, screen: {} },
+           color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT,
+           sprites: [],
+        });
+      }
+      // irrelevant but we can keep the colors for future uses.
+      /*segments[findSegment(playerZ).index + 2].color = COLORS.START;
+      segments[findSegment(playerZ).index + 3].color = COLORS.START;
+      for(var n = 0 ; n < rumbleLength ; n++)
+        segments[segments.length-1-n].color = COLORS.FINISH;*/
+      addSprite(segments, redLightDistance + 4,  SPRITES.GREEN, -1)
+      segments[redLightDistance]["color"] = COLORS.RED
+      segments[redLightDistance-20]["color"] = COLORS.GREEN
+      //segments[redLightDistance-pointDDistance].color = COLORS.DRKRED 
+
+      trackLength = segments.length * segmentLength;
+    }
+
+    function findSegment(z) {
+      return segments[Math.floor(z/segmentLength) % segments.length];
+    }
+
+    //=========================================================================
+    // THE GAME LOOP
+    //=========================================================================
+
+    Game.run({
+      canvas: canvas, render: render, update: update, stats: stats, step: step,
+      images: ["background", "sprites"],
+      keys: [
+        { keys: [KEY.LEFT,  KEY.A], mode: 'down', action: function() { keyLeft   = true;  } },
+        { keys: [KEY.RIGHT, KEY.D], mode: 'down', action: function() { keyRight  = true;  } },
+        { keys: [KEY.UP,    KEY.W], mode: 'down', action: function() { keyFaster = true;  } },
+        { keys: [KEY.DOWN,  KEY.S], mode: 'down', action: function() { keySlower = true;  } },
+        { keys: [KEY.LEFT,  KEY.A], mode: 'up',   action: function() { keyLeft   = false; } },
+        { keys: [KEY.RIGHT, KEY.D], mode: 'up',   action: function() { keyRight  = false; } },
+        { keys: [KEY.UP,    KEY.W], mode: 'up',   action: function() { keyFaster = false; } },
+        { keys: [KEY.DOWN,  KEY.S], mode: 'up',   action: function() { keySlower = false; } }
+      ],
+      ready: function(images) {
+        background = images[0];
+        sprites    = images[1];
+        reset();
+      }
+    });
+    // function resumeGame(){
+    //   pause = false;
+    // }
+    // function pauseGame(){
+    //   pause = true;
+    // }
+
+    function reset(options) {
+      options       = options || {};
+      canvas.width  = width  = Util.toInt(options.width,          width);
+      canvas.height = height = Util.toInt(options.height,         height);
+      lanes                  = Util.toInt(options.lanes,          lanes);
+      roadWidth              = Util.toInt(options.roadWidth,      roadWidth);
+      cameraHeight           = Util.toInt(options.cameraHeight,   cameraHeight);
+      drawDistance           = Util.toInt(options.drawDistance,   drawDistance);
+      fogDensity             = Util.toInt(options.fogDensity,     fogDensity);
+      fieldOfView            = Util.toInt(options.fieldOfView,    fieldOfView);
+      segmentLength          = Util.toInt(options.segmentLength,  segmentLength);
+      rumbleLength           = Util.toInt(options.rumbleLength,   rumbleLength);
+      cameraDepth            = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
+      playerZ                = (cameraHeight * cameraDepth);
+      resolution             = height/480;
+      speed                  = (1 - Math.random()*Math.random()) * maxSpeed / 2 + maxSpeed / 2;
+      speedOrg               = speed;
+      brakeState             = false;
+      resetFlag              = false;
+      missingRedFlag         = false;
+      checkedFlag            = false;
+      cleanFlag              = false;
+      redLightStatus         = 2;
+
+      if(options.resetPosition){
+        position = 0
+        zeroSpeedFlag = false
+      }
+      
+      refreshTweakUI();
+
+      if ((segments.length==0) || (options.segmentLength) || (options.rumbleLength))
+        resetRoad(); // only rebuild road when necessary
+    }
+
+    function resetAll(){
+      correctStop = 0
+      incorrectStop = 0
+      document.getElementById("successful").innerText = correctStop.toString()
+      document.getElementById("failed").innerText = incorrectStop.toString()
+      changeToGreenLights();
+      console.log(correctStop, incorrectStop)
+      clearTimeout(amberTrigger)
+      clearTimeout(redTrigger)
+      reset({resetPosition: true})
+      aia_send("reset");
+    }
+
+    //=========================================================================
+    // TWEAK UI HANDLERS
+    //=========================================================================
+
+    Dom.on('resolution', 'change', function(ev) {
+      var w, h, ratio;
+      switch(ev.target.options[ev.target.selectedIndex].value) {
+        case 'fine':   w = 1280; h = 960;  ratio=w/width; break;
+        case 'high':   w = 1024; h = 768;  ratio=w/width; break;
+        case 'medium': w = 640;  h = 480;  ratio=w/width; break;
+        case 'low':    w = 480;  h = 360;  ratio=w/width; break;
+      }
+      reset({ width: w, height: h })
+      Dom.blur(ev);
+    });
+
+    Dom.on('lanes',          'change', function(ev) { Dom.blur(ev); reset({ lanes:         ev.target.options[ev.target.selectedIndex].value }); });
+    Dom.on('roadWidth',      'change', function(ev) { Dom.blur(ev); reset({ roadWidth:     Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    Dom.on('cameraHeight',   'change', function(ev) { Dom.blur(ev); reset({ cameraHeight:  Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    Dom.on('drawDistance',   'change', function(ev) { Dom.blur(ev); reset({ drawDistance:  Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    Dom.on('fieldOfView',    'change', function(ev) { Dom.blur(ev); reset({ fieldOfView:   Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+    Dom.on('fogDensity',     'change', function(ev) { Dom.blur(ev); reset({ fogDensity:    Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+
+    function refreshTweakUI() {
+      Dom.get('lanes').selectedIndex = lanes-1;
+      Dom.get('currentRoadWidth').innerHTML      = Dom.get('roadWidth').value      = roadWidth;
+      Dom.get('currentCameraHeight').innerHTML   = Dom.get('cameraHeight').value   = cameraHeight;
+      Dom.get('currentDrawDistance').innerHTML   = Dom.get('drawDistance').value   = drawDistance;
+      Dom.get('currentFieldOfView').innerHTML    = Dom.get('fieldOfView').value    = fieldOfView;
+      Dom.get('currentFogDensity').innerHTML     = Dom.get('fogDensity').value     = fogDensity;
+    }
+
+    //=========================================================================
+
+  </script>
+
+  <script>aia_send('startGame');</script>
+
+</body> 
+

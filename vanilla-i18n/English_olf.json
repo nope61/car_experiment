@@ -1,0 +1,203 @@
+{
+    "language": "English",
+    "chapter": "Unit 4 - Robotics (II)",
+    "interaction": "Experiment",
+    "taskone": "Task One: Skill-based Reasoning",
+    "tasktwo": "Task Two: Rule-based Reasoning",
+    "taskthree": "Task Three: Knowledge-based Reasoning",
+    "taskfour": "Task Four: Traffic Light Simulator III",
+    "taskfive": "Task Five: Traffic Light Simulator IV",
+    "taskone_title": "Skill-based Reasoning",
+    "taskone_task_description": "Task Description",
+    "taskone_press": "press \"B\" key on your keyboard",
+    "taskone_brake": "to brake the car",
+    "taskone_when_traffic": "If traffic light turns from Green to Amber or in red when travelling to the Green Line, ",
+    "taskone_the_brown": "The Brown Line",
+    "taskone_close_bracket": ")",
+    "taskone_no_press": "If the traffic light remain Green when travelling to the Green Line, no need to press any key",
+    "taskone_system_automatically": "System will scores you performance automatically",
+    "taskone_in_the_simulation": "In the simulation",
+    "taskone_stop_closely": "When the traffic light signal is red, if you can stop the car before the red line, it will be counted as a Successful stop. Otherwise it will be counted as a Failed stop",
+    "taskone_no_count": "If the traffic light remain Green when you stop the car, it will be counted as a Failed stop. If you keep going, it will be counted as a Successful stop",
+    "taskone_from_the_stop": ") from the stop line (",
+    "taskone_the_red_line": "The Red Line",
+    "taskone_will_be_counted": ") will be counted as a Successful stop",
+    "taskone_a_car_stopping": "A car stopping more than 10m away from the stop line will be counted as a Failed stop",
+    "taskone_press_the_button": "Press the button to brake the car.",
+    "taskone_successful_stop": "Successful stops: ",
+    "taskone_failed_stop": "Failed stops: ",
+    "taskone_exit_game": "Exit Game",
+    "tasktwo_title": "Rule-based Reasoning",
+    "tasktwo_task_description": "Task Description",
+    "tasktwo_use_the_rule": "Use the rule parameters as shown below the simulation frame.",
+    "tasktwo_press": "Press",
+    "reset_game": "Reset",
+    "start_game": "Start",
+    "tasktwo_to_observe": "to observe the performance of the designed rule",
+    "tasktwo_system_automatically": "System automatically and continuously selects the relevant rule to apply and score the resulting performance",
+    "tasktwo_game_statistics": "Game Statistics",
+    "tasktwo_speed": "Speed:",
+    "tasktwo_km_per_h": "km/h",
+    "tasktwo_distance": "Distance:",
+    "tasktwo_meter": "m",
+    "tasktwo_status": "Status:",
+    "tasktwo_successful_attempts": "Successful attempts:",
+    "tasktwo_failed_attempts": "Failed attempts:",
+    "tasktwo_change_weather": "Change Weather!",
+    "tasktwo_hints": "Hints",
+    "tasktwo_the_rules_only": "The rules only works when there is an amber or red light. In other words",
+    "tasktwo_short_distance": "Short Distance",
+    "tasktwo_mid_distance": "Mid Distance",
+    "tasktwo_long_distance": "Long DistanceDistance",
+    "tasktwo_no_brake": "No Brake",
+    "tasktwo_light_brake": "Light Brake",
+    "tasktwo_hard_brake": "Hard Brake",
+    "tasktwo_low_speed": "Low Speed",
+    "tasktwo_mid_speed": "Mid Speed",
+    "tasktwo_high_speed": "High Speed",
+    "tasktwo_initial_rules_parameters": "Initial Rules Parameters",
+    "tasktwo_stage0_0": {
+        "options": "<select id=\"stage0_0\"><option value=\"No Brake\"><i18n vanilla-i18n=\"tasktwo_stage0_0.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage0_0.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"tasktwo_stage0_0.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage0_1": {
+        "options": "<select id=\"stage0_1\"><option value=\"No Brake\"><i18n vanilla-i18n=\"tasktwo_stage0_1.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage0_1.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"tasktwo_stage0_1.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage0_2": {
+        "options": "<select id=\"stage0_2\"><option value=\"No Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage0_2.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"tasktwo_stage0_2.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"tasktwo_stage0_2.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage1_0": {
+        "options": "<select id=\"stage1_0\"><option value=\"No Brake\"><i18n vanilla-i18n=\"tasktwo_stage1_0.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"tasktwo_stage1_0.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage1_0.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage1_1": {
+        "options": "<select id=\"stage1_1\"><option value=\"No Brake\"><i18n vanilla-i18n=\"tasktwo_stage1_1.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage1_1.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"tasktwo_stage1_1.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage1_2": {
+        "options": "<select id=\"stage1_2\"><option value=\"No Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage1_2.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"tasktwo_stage1_2.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"tasktwo_stage1_2.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage2_0": {
+        "options": "<select id=\"stage2_0\"><option value=\"No Brake\"><i18n vanilla-i18n=\"tasktwo_stage2_0.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"tasktwo_stage2_0.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage2_0.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage2_1": {
+        "options": "<select id=\"stage2_1\"><option value=\"No Brake\"><i18n vanilla-i18n=\"tasktwo_stage2_1.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage2_1.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"tasktwo_stage2_1.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "tasktwo_stage2_2": {
+        "options": "<select id=\"stage2_2\"><option value=\"No Brake\"><i18n vanilla-i18n=\"tasktwo_stage2_2.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"tasktwo_stage2_2.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"tasktwo_stage2_2.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_title": "Rule-based Stopping",
+    "taskthree_task_description": "Task Description",
+    "taskthree_task_three": "Task Two: Rule-based Reasoning",
+    "taskthree_input_your_choices": "Input your choices of distances and speeds and the actions to take",
+    "taskthree_your_rules_reflect": "Your rules reflect your driving style (Are you a conservative or aggressive driver)",
+    "taskthree_input_your_rule": "Input your rule set and play",
+    "taskthree_adjust_your_rule": "Adjust your rule parameters to see the different performances",
+    "taskthree_click_screen_capture": "Click screen capture to capture your perfect rule set",
+    "taskthree_click_change_weather": "Click Change weather and repeat step 1 to step 4",
+    "taskthree_submit_your": "Submit your Screen Captures in <b>Assignment</b>",
+    "taskthree_game_statistics": "Game Statistics",
+    "taskthree_speed": "Speed:",
+    "taskthree_km_per_h": "km/h",
+    "taskthree_distance": "Distance:",
+    "taskthree_meter": "m",
+    "taskthree_status": "Status:",
+    "taskthree_no_brake": "No Brake",
+    "taskthree_successful_attempts": "Successful attempts:",
+    "taskthree_failed_attempts": "Failed attempts:",
+    "taskthree_change_weather": "Change Weather!",
+    "taskthree_hints": "Hints",
+    "taskthree_the_rules_only": "The rules only works when there is an amber or red light. In other words",
+    "taskthree_the_red_rule": "the red rule indicator will only light when the light is *not* green.",
+    "taskthree_short_distance": "Short Distance",
+    "taskthree_mid_distance": "Mid Distance",
+    "taskthree_long_distance": "Long Distance",
+    "taskthree_low_speed": "Low Speed",
+    "taskthree_mid_speed": "Mid Speed",
+    "taskthree_high_speed": "High Speed",
+    "taskthree_initial_rules_parameters": "Initial Rules Parameters",
+    "taskthree_stage0_0": {
+        "options": "<select id=\"stage0_0\"><option value=\"No Brake\"><i18n vanilla-i18n=\"taskthree_stage0_0.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage0_0.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"taskthree_stage0_0.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage0_1": {
+        "options": "<select id=\"stage0_1\"><option value=\"No Brake\"><i18n vanilla-i18n=\"taskthree_stage0_1.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage0_1.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"taskthree_stage0_1.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage0_2": {
+        "options": "<select id=\"stage0_2\"><option value=\"No Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage0_2.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"taskthree_stage0_2.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"taskthree_stage0_2.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage1_0": {
+        "options": "<select id=\"stage1_0\"><option value=\"No Brake\"><i18n vanilla-i18n=\"taskthree_stage1_0.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"taskthree_stage1_0.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage1_0.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage1_1": {
+        "options": "<select id=\"stage1_1\"><option value=\"No Brake\"><i18n vanilla-i18n=\"taskthree_stage1_1.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage1_1.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"taskthree_stage1_1.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage1_2": {
+        "options": "<select id=\"stage1_2\"><option value=\"No Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage1_2.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"taskthree_stage1_2.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"taskthree_stage1_2.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage2_0": {
+        "options": "<select id=\"stage2_0\"><option value=\"No Brake\"><i18n vanilla-i18n=\"taskthree_stage2_0.no_brake\">No Brake</i18n></option><option value=\"Light Brake\"><i18n vanilla-i18n=\"taskthree_stage2_0.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage2_0.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage2_1": {
+        "options": "<select id=\"stage2_1\"><option value=\"No Brake\"><i18n vanilla-i18n=\"taskthree_stage2_1.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage2_1.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"taskthree_stage2_1.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_stage2_2": {
+        "options": "<select id=\"stage2_2\"><option value=\"No Brake\"><i18n vanilla-i18n=\"taskthree_stage2_2.no_brake\">No Brake</i18n></option><option value=\"Light Brake\" selected=\"selected\"><i18n vanilla-i18n=\"taskthree_stage2_2.light_brake\">Light Brake</i18n></option><option value=\"Hard Brake\"><i18n vanilla-i18n=\"taskthree_stage2_2.hard_brake\">Hard Brake</i18n></option></select>"
+    },
+    "taskthree_capture_and_save": "Capture and Save",
+    "taskthree_exit_game": "Exit Game",
+    "taskfour_title": "Knowledge-based stopping",
+    "taskfour_task_description": "Task Description",
+    "taskfour_press": "Press",
+    "taskfour_go_ai": "Go AI",
+    "taskfour_change_weather": "Change Weather!",
+    "taskfour_when_traffic": "when traffic light turns from Green to Amber",
+    "taskfour_system_automatically": "System automatically applies the AI Driver to the traffic light situation and score the resulting performance",
+    "taskfour_game_statistics": "Game Statistics",
+    "taskfour_speed": "Speed:",
+    "taskfour_km_per_h": "km/h",
+    "taskfour_meter": "m",
+    "taskfour_distance": "Distance:",
+    "taskfour_status": "Status:",
+    "taskfour_current_mode": "Current Mode:",
+    "taskfour_successful_attempts": "Successful attempts:",
+    "taskfour_failed_attempts": "Failed attempts:",
+    "taskfour_step_1": "Step 1: Evaluate our Pre-trained Model",
+    "taskfour_step_2": "Step2: Change the Weather",
+    "taskfour_exit_game": "Exit Game",
+    "taskfive_title": "Knowledge-based Reasoning",
+    "taskfive_task_description": "Task Description",
+    "taskfive_press": "Press",
+    "taskfive_when_traffic": "when traffic light turns from Green to Amber in",
+    "taskfive_data_collection": "Data Collection",
+    "taskfive_mode": "mode",
+    "taskfive_when_the_number": " When the number of good examples is sufficient; press",
+    "taskfive_train_from": "Train from collected data",
+    "taskfive_button_for": "button for training the data",
+    "taskfive_model_evaluation": "Model Evaluation",
+    "taskfive_to_see_the": "to see the performance of your AI Driver",
+    "taskfive_system_automatically": "System automatically applies the AI Driver to the traffic light situation and score the resulting performance",
+    "taskfive_press_change": "Press Change",
+    "taskfive_weather": "Weather!",
+    "taskfive_to_train_the": "to train the AI driver under different weather condition and repeat 1 to 4",
+    "taskfive_game_statistics": "Game Statistics",
+    "taskfive_speed": "Speed:",
+    "taskfive_km_per_h": "km/h",
+    "taskfive_meter": "m",
+    "taskfive_distance": "Distance:",
+    "taskfive_status": "Status:",
+    "taskfive_current_mode": "Current Mode:",
+    "taskfive_successful_attempts": "Successful attempts:",
+    "taskfive_failed_attempts": "Failed attempts:",
+    "taskfive_step_1": "Step 1: Data Collection",
+    "taskfive_data_collection_1": "Data Collection",
+    "taskfive_press_b": "Press \"B\" to brake.",
+    "taskfive_data_sample": "Data sample collected:",
+    "taskfive_step_2": "Step 2: Train the Model",
+    "taskfive_train_from_2": "Train from collected data",
+    "taskfive_training_loss": "Training Loss:",
+    "taskfive_step_3": "Step 3: Evaluate the Model",
+    "taskfive_model_evaluation_3": "Model Evaluation",
+    "taskfive_step_4": "Step 4: Change the Weather",
+    "taskfive_change_weather": "Change Weather!",
+    "taskfive_exit_game": "Exit Game",
+    "taskfive_in": "In",
+    "taskfive_press_mid": ", press \"B\" key on your keyboard when traffic light turns from Green to Amber.",
+    "end_time": "This experiment will be ended after: "
+}
